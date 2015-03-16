@@ -574,7 +574,7 @@ monte_paired<-function(data,n=9999,table=TRUE,diff_col=3,one_sided=F){
     return(x) 
   }
 }
-
+  
 
 
 
