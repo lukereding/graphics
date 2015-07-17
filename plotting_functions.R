@@ -5,6 +5,7 @@ if (!"magrittr" %in% installed.packages()) install.packages("magrittr")
 library(dplyr)
 library(wesanderson)
 library(magrittr)
+
 # some attractive colors:
 ruby <-rgb(202/255,53/255,7/255,1)
 slate <- rgb(137/255,157/255,164/255,1)
@@ -38,7 +39,7 @@ cols<-c(ruby,mint,golden,slate,orange,sky)
 
 simple<-function(data,lab=rep(c(),length(data)),point_size=1.2,line_color="red",line_width=3.0,jitter=T,point_col="#00000080",y_limits=c(min(unlist(data),na.rm=T),max(unlist(data),na.rm=T)),median=FALSE,rug=TRUE,sample_size=T,IQR=F,...){
   
-  # make sure the data is a list; in the future I nee dto change the code to accomodate other types of data input (e.g. dataframes with y~x)
+  # make sure the data is a list; in the future I need to change the code to accomodate other types of data input (e.g. dataframes with y~x)
   if(is.list(data)!=TRUE){
     stop("input your data as a list")
   }
@@ -123,7 +124,7 @@ require(beeswarm)
 
 beeStrip<-function(data,lab=rep(c(),length(data)),point_size=1.4,beeMethod="center",line_color="red",line_width=3.0,jitter=T,point_col="#00000080",y_limits=c(min(unlist(data),na.rm=T),max(unlist(data),na.rm=T)),median=FALSE,rug=TRUE,sample_size=T,IQR=F,side=-1,...){
   
-  # make sure group is a factor; if not, convert it to one
+  # make sure the data is a list; in the future I need to change the code to accomodate other types of data input (e.g. dataframes with y~x)
   if(is.list(data)!=TRUE){
     stop("input your data as a list")
   }
