@@ -43,22 +43,25 @@
 
 <p>The simple() function takes your data ass a list, with each element of the list corresponding to a different group you'd like to plot. It plots each data point for each group and draws a line for the mean. Its arguments are:</p>
 
-<pre><code>    `function (data, lab = rep(c(), length(data)), point_size = 1.2, line_color = "red", line_width = 3, jitter = T, point_col = "#00000080", y_limits = c(min(unlist(data), na.rm = T), max(unlist(data),na.rm = T)), median = FALSE, rug = TRUE, sample_size = T,IQR = F, ...) `
+<pre><code>    function (data, lab = rep(c(), length(data)), point_size = 1.2, line_color = "red", line_width = 3, jitter = T, point_col = "#00000080", y_limits = c(min(unlist(data), na.rm = T), max(unlist(data),na.rm = T)), median = FALSE, rug = TRUE, sample_size = T,IQR = F, ...) 
 </code></pre>
 
-<p><strong>Explanations for some of the more esoteric arguments:</strong>
-<code>lab</code> : x-axis labels
+<p><strong>Explanations for some of the more esoteric arguments:</strong></p>
+
+<p><code>lab</code> : x-axis labels
 <code>jitter</code> : logical. should the data points be 'jittered' to avoid overplotting?
 <code>rug</code> : logical. should a rug plot be included on the left-hand side of the plot? Colors for the rug plot are the same as the colors of the groups, but some transparency is added to avoid overplotting
 <code>sample_size</code> : logical. should the sample size be written above the x-axis under each group?
 <code>IQR</code> : logical. should a vertical line for the inter-quartile range be plotted as well? Making this true and median = T gives the reader of the graph all the information they would have when looking at a boxplot, plus the actual data.</p>
 
-<p><strong>Examples</strong>
-              <code>simple(x,main="simple() defaults")</code></p>
+<p><strong>Examples</strong></p>
+
+<pre><code>          simple(x,main="simple() defaults")
+</code></pre>
 
 <p><img src="https://github.com/lukereding/graphics/blob/master/examplePlots/simpleDefalts.pdf" alt="simpleDefaults"></p>
 
-<pre><code> `simple(list(rnorm(50,50,5),rnorm(30,40,6),rnorm(10,60,2),rnorm(60,50,10),rnorm(30,39,4)),point_col=wes_palette(5, name = "Zissou"),line_color="black",median=T,main="simple() dressed up",xlab="groups",ylab="response",lab=c("a","b","c","d","e"))`
+<pre><code> simple(list(rnorm(50,50,5),rnorm(30,40,6),rnorm(10,60,2),rnorm(60,50,10),rnorm(30,39,4)),point_col=wes_palette(5, name = "Zissou"),line_color="black",median=T,main="simple() dressed up",xlab="groups",ylab="response",lab=c("a","b","c","d","e"))
 </code></pre>
 
 <p><img src="https://github.com/lukereding/graphics/blob/master/examplePlots/simpleDressedUp.pdf" alt="simpleDressedUp"></p>
