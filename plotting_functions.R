@@ -2,9 +2,12 @@ cat("Plotting functions:\nstrip -- show the average as a point with option SE / 
 if (!"dplyr" %in% installed.packages()) install.packages("dplyr")
 if (!"wesanderson" %in% installed.packages()) install.packages("wesanderson")
 if (!"magrittr" %in% installed.packages()) install.packages("magrittr")
+if (!"beeswarm" %in% installed.packages()) install.packages("beeswarm")
+library(beeswarm)
 library(dplyr)
 library(wesanderson)
 library(magrittr)
+library(viridis)
 
 # some attractive colors:
 ruby <-rgb(202/255,53/255,7/255,1)
@@ -113,13 +116,11 @@ simple<-function(data,lab=rep(c(),length(data)),point_size=1.2,line_color="red",
   }
 }
 
-if (!"beeswarm" %in% installed.packages()) install.packages("beeswarm")
 # similar to simple() above, but plot using beeswarm
-require(beeswarm)
 
 # examples
 ## beeStrip(list(rnorm(50,50,5),rnorm(30,40,6),rnorm(10,60,2),rnorm(60,50,10),rnorm(30,39,4)),point_col=wes_palette(5, name = "Zissou"),line_color="black",median=T)
-# beeStrip(list(iris %>% filter(Species=="setosa") %>% .$Sepal.Length, iris %>% filter(Species=="versicolor") %>% .$Sepal.Length, iris %>% filter(Species=="virginica") %>% .$Sepal.Length),point_col=cols,line_color="black",IQR=T,lab=c("setosa","versicolor","virginica"),xlab="species",ylab="sepal length")
+# beeStrip(list(iris %>% filter(Species=="setosa") %>% .$Sepal.Length, iris %>% filter(Species=="versicolor") %>% .$Sepal.Length, iris %>% filter(Species=="virginica") %>% .$Sepal.Length),point_col=viridis(3),line_color="black",IQR=T,lab=c("setosa","versicolor","virginica"),xlab="species",ylab="sepal length")
 # beeStrip(list(rnorm(50,50,5),rnorm(30,40,6),rnorm(10,60,2),rnorm(60,50,10),rnorm(30,39,4)),point_col=wes_palette(5, name = "Zissou"),line_color="grey30",IQR=T)
 
 beeStrip<-function(data,lab=rep(c(),length(data)),point_size=1.4,beeMethod="center",line_color="red",line_width=3.0,jitter=T,point_col="#00000080",y_limits=c(min(unlist(data),na.rm=T),max(unlist(data),na.rm=T)),median=FALSE,rug=TRUE,sample_size=T,IQR=F,side=-1,...){
