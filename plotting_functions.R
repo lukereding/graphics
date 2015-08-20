@@ -142,7 +142,7 @@ beeStrip<-function(data,lab=rep(c(),length(data)),point_size=1.4,beeMethod="cent
   
   # plot the mean as a line
   for(i in 1:length(data)){
-    scale = 0.04
+    scale = 0.05
     lines(x=c(x_values[i]-(scale*xRange),x_values[i]+(scale*xRange)),y=c(rep(mean(data[[i]],na.rm=T),2)),col=line_color,lwd=line_width)
   }
   
@@ -150,7 +150,7 @@ beeStrip<-function(data,lab=rep(c(),length(data)),point_size=1.4,beeMethod="cent
   if(IQR==TRUE){
     p<-boxplot(data,plot=F)
     for(i in 1:length(data)){
-      lines(x=c(x_values[i],x_values[i]),y=c(p$stats[2,i],p$stats[4,i]),lwd=2,col=addAlpha(line_color,0.6))
+      lines(x=c(x_values[i],x_values[i]),y=c(p$stats[2,i],p$stats[4,i]),col=line_color,lwd=line_width)
     }
   }
   
@@ -585,7 +585,7 @@ scatter<-function(x,y,xlab="",ylab="",line=T,sig=T,color="black",line_col="red",
   }
   
   # do the actual plotting
-  plot(x,y,xlab=xlab,ylab=ylab,pch=plottingCharacter,bty="o",col=color,...)
+  plot(x,y,xlab=xlab,ylab=ylab,pch=plottingCharacter,bty="l",col=color,...)
   
   p<-summary(lm(y~x))$coefficients[2,4]
   c<-summary(lm(y~x))$coefficients[2,1]
@@ -612,7 +612,7 @@ scatter<-function(x,y,xlab="",ylab="",line=T,sig=T,color="black",line_col="red",
   # adding 1-d 'rug plots' to the bottom and right of the plot to show distribution of each variable
   if(rug==T){
     rug(x,side=1,col="#00000070",lwd=2)
-    rug(y,side=4,col="#00000070",lwd=2)
+    rug(y,side=2,col="#00000070",lwd=2)
   }
   
   # add statistical significance to the plot
