@@ -123,7 +123,7 @@ simple<-function(data,lab=rep(c(),length(data)),point_size=1.2,line_color="red",
 # beeStrip(list(iris %>% filter(Species=="setosa") %>% .$Sepal.Length, iris %>% filter(Species=="versicolor") %>% .$Sepal.Length, iris %>% filter(Species=="virginica") %>% .$Sepal.Length),point_col=viridis(3),line_color="black",IQR=T,lab=c("setosa","versicolor","virginica"),xlab="species",ylab="sepal length")
 # beeStrip(list(rnorm(50,50,5),rnorm(30,40,6),rnorm(10,60,2),rnorm(60,50,10),rnorm(30,39,4)),point_col=wes_palette(5, name = "Zissou"),line_color="grey30",IQR=T)
 
-beeStrip<-function(data,lab=rep(c(),length(data)),point_size=1.4,beeMethod="center",line_color="red",line_width=3.0,jitter=T,point_col="#00000080",y_limits=c(min(unlist(data),na.rm=T),max(unlist(data),na.rm=T)),median=FALSE,rug=TRUE,sample_size=T,IQR=F,side=-1,...){
+beeStrip<-function(data,lab=rep(c(),length(data)),point_size=1.4,beeMethod="center",line_color="red",line_width=3.0,jitter=T,point_col=viridis(length(data)),y_limits=c(min(unlist(data),na.rm=T),max(unlist(data),na.rm=T)),median=FALSE,rug=TRUE,sample_size=T,IQR=F,side=-1,...){
   
   # make sure the data is a list; in the future I need to change the code to accomodate other types of data input (e.g. dataframes with y~x)
   if(is.list(data)!=TRUE){
