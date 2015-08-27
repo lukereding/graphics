@@ -35,3 +35,7 @@ Make pretty graphs like this:
 `bar(list(iris %>% filter(Species=="setosa") %>% .$Sepal.Length, iris %>% filter(Species=="versicolor") %>% .$Sepal.Length, iris %>% filter(Species=="virginica") %>% .$Sepal.Length),median=T,CI=T,lab=c("setosa","versicolor","virginica"),ylab="sepal length",main="bar() example")`   
 
 ![bar](https://github.com/lukereding/graphics/raw/master/examplePlots/bar.png)
+
+`mod(iris$Sepal.Length,iris$Species,ylab="sepal length",xlab="species",bty="l",main="mod() example")`
+
+![mod](https://github.com/lukereding/graphics/raw/master/examplePlots/mod.png)
