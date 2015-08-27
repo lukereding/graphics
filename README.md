@@ -24,4 +24,4 @@ source-ing the code will download any needed packages not installed on your mach
 
 Make pretty graphs like this:
 
-!(beestrip)[https://raw.githubusercontent.com/lukereding/graphics/master/examplePlots/irisBeeStrip.png]
+![beestrip](https://raw.githubusercontent.com/lukereding/graphics/master/examplePlots/irisBeeStrip.png)
