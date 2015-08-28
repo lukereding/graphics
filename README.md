@@ -26,7 +26,7 @@ Make pretty graphs like this:
 
 `data(iris); beeStripMod(iris$Sepal.Width,iris$Species,xlab="species",ylab="sepal length",main="beeStripMod() example")`
 
-~[beeStripMod](https://github.com/lukereding/graphics/raw/master/examplePlots/Rplot.png)
+![beeStripMod](https://github.com/lukereding/graphics/raw/master/examplePlots/Rplot.png)
 
 `beeStrip(list(iris %>% filter(Species=="setosa") %>% .$Sepal.Length, iris %>% filter(Species=="versicolor") %>% .$Sepal.Length, iris %>% filter(Species=="virginica") %>% .$Sepal.Length),line_color="black",IQR=T,lab=c("setosa","versicolor","virginica"),xlab="species",ylab="sepal length",main="beeStrip() example")`   
 
