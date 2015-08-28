@@ -632,8 +632,8 @@ scatter<-function(x,y,xlab="",ylab="",line=T,sig=T,color="black",line_col="red",
 ##############
 ### beeStrip + mod
 ##################
-data(iris)
-beeStripMod(iris$Sepal.Width,iris$Species,xlab="species",ylab="sepal length",main="beeStripMod() example")
+#data(iris)
+#beeStripMod(iris$Sepal.Length,iris$Species,xlab="species",ylab="sepal length",main="beeStripMod() example")
 
 beeStripMod<-function(data,group,lab=rep(c(),length(data)),point_size=1.4,beeMethod="center",line_width=3.0,jitter=T,point_col=ifelse(is.list(data) %>% rep(20),viridis(length(data)+1)[1:length(data)],viridis(nlevels(group)+1)[1:nlevels(group)]),y_limits=c(ifelse(is.list(data),min(unlist(data)),min(data)),ifelse(is.list(data),max(unlist(data),max(data)))),mean=FALSE,sample_size=T,side=-1,red_median=F,stats=T,...){
   
@@ -658,6 +658,7 @@ beeStripMod<-function(data,group,lab=rep(c(),length(data)),point_size=1.4,beeMet
     boxplot_table<-boxplot(data~group,plot=F)
     # create the plot
     beeswarm(data~group,method=beeMethod,priority="density",pch=16,col=point_col,cex=point_size,side = side,bty='l',labels=lab,...)
+    
     if(stats==T){
       print(TukeyHSD(aov(data~group)))
       x = summary(aov(data~group))[[1]][["Pr(>F)"]][1] %>% round(4)
@@ -667,8 +668,9 @@ beeStripMod<-function(data,group,lab=rep(c(),length(data)),point_size=1.4,beeMet
       else{
         x = paste("p = ",x,sep="")
       }
-      text(x=(median(1:number_groups)),y=max(data)*0.95,labels=paste("anova, ",x,sep=""),pos=1)
+      text(x=(median(1:number_groups)),y=max(data),labels=paste("anova, ",x,sep=""),pos=1)
     }
+    
   }
   
   x_values = 1:number_groups
@@ -688,7 +690,7 @@ beeStripMod<-function(data,group,lab=rep(c(),length(data)),point_size=1.4,beeMet
   
   # for plotting sample size below each group
   if(sample_size==TRUE){
-      text(x=x_values+(scale*number_groups),y=min(data),paste("n = ",boxplot_table$n,sep=""),col="grey20")
+      text(x=x_values+(scale*number_groups),y=min(data)*0.99,paste("n = ",boxplot_table$n,sep=""),col="grey20")
   }
 }
 
