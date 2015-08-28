@@ -32,7 +32,7 @@ Plot the data for each group as a histogram; include modified boxplot from Tufte
 
 ![beeStripMod](https://github.com/lukereding/graphics/raw/master/examplePlots/Rplot.png)
 
-Same, but leave out the modified boxplot
+Same, but leave out the modified boxplot. Option to include the IQR (shown here)
 
 `beeStrip(list(iris %>% filter(Species=="setosa") %>% .$Sepal.Length, iris %>% filter(Species=="versicolor") %>% .$Sepal.Length, iris %>% filter(Species=="virginica") %>% .$Sepal.Length),line_color="black",IQR=T,lab=c("setosa","versicolor","virginica"),xlab="species",ylab="sepal length",main="beeStrip() example")`   
 
