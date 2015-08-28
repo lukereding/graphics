@@ -30,7 +30,7 @@ Plot the data for each group as a histogram; include modified boxplot from Tufte
 
 `data(iris); beeStripMod(iris$Sepal.Width,iris$Species,xlab="species",ylab="sepal length",main="beeStripMod() example")`
 
-![beeStripMod](https://github.com/lukereding/graphics/raw/master/examplePlots/Rplot.png)
+![beeStripMod](https://github.com/lukereding/graphics/raw/master/examplePlots/beeStripMod.png)
 
 Same, but leave out the modified boxplot. Option to include the IQR (shown here)
 
