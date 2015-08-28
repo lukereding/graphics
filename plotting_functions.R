@@ -177,7 +177,7 @@ beeStrip<-function(data,lab=rep(c(),length(data)),point_size=1.4,beeMethod="cent
   # for plotting sample size below each group
   if(sample_size==TRUE){
     for(i in 1:length(data)){
-      text(x_values[i],y_limits[1],paste("n = ",length(data[[i]]),sep=""),col="grey20")
+      text(x_values[i],y_limits[1]*0.99,paste("n = ",length(data[[i]]),sep=""),col="grey20")
     }
   }
 }
