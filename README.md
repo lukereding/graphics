@@ -22,24 +22,37 @@ source-ing the code will download any needed packages not installed on your mach
 
 ----------
 
-Make pretty graphs like this:
+##Make pretty graphs like this:
+
+### quantitative x categorical data
+
+Plot the data for each group as a histogram; include modified boxplot from Tufte alongside each histogram
 
 `data(iris); beeStripMod(iris$Sepal.Width,iris$Species,xlab="species",ylab="sepal length",main="beeStripMod() example")`
 
 ![beeStripMod](https://github.com/lukereding/graphics/raw/master/examplePlots/Rplot.png)
 
+Same, but leave out the modified boxplot
+
 `beeStrip(list(iris %>% filter(Species=="setosa") %>% .$Sepal.Length, iris %>% filter(Species=="versicolor") %>% .$Sepal.Length, iris %>% filter(Species=="virginica") %>% .$Sepal.Length),line_color="black",IQR=T,lab=c("setosa","versicolor","virginica"),xlab="species",ylab="sepal length",main="beeStrip() example")`   
 
 ![beestrip](https://github.com/lukereding/graphics/raw/master/examplePlots/beeStrip.png)
 
-`scatter(iris %>% filter(Species=="setosa") %>% .$Petal.Length %>% jitter(.25), iris %>% filter(Species=="setosa") %>% .$Petal.Width %>% jitter(0.25),xlab="petal length",ylab="petal width",color="#00000050",main="scatter() example")`    
-
-![scatter](https://github.com/lukereding/graphics/raw/master/examplePlots/scatter.png)
+Bar plot, but show the data jittered
 
 `bar(list(iris %>% filter(Species=="setosa") %>% .$Sepal.Length, iris %>% filter(Species=="versicolor") %>% .$Sepal.Length, iris %>% filter(Species=="virginica") %>% .$Sepal.Length),median=T,CI=T,lab=c("setosa","versicolor","virginica"),ylab="sepal length",main="bar() example")`   
 
 ![bar](https://github.com/lukereding/graphics/raw/master/examplePlots/bar.png)
 
+Modified box plot alone
+
 `mod(iris$Sepal.Length,iris$Species,ylab="sepal length",xlab="species",bty="l",main="mod() example")`
 
 ![mod](https://github.com/lukereding/graphics/raw/master/examplePlots/mod.png)
+
+### quantitative x quantitative data
+
+`scatter(iris %>% filter(Species=="setosa") %>% .$Petal.Length %>% jitter(.25), iris %>% filter(Species=="setosa") %>% .$Petal.Width %>% jitter(0.25),xlab="petal length",ylab="petal width",color="#00000050",main="scatter() example")`    
+
+![scatter](https://github.com/lukereding/graphics/raw/master/examplePlots/scatter.png)
+
