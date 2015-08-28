@@ -629,6 +629,68 @@ scatter<-function(x,y,xlab="",ylab="",line=T,sig=T,color="black",line_col="red",
   par(lwd=1,cex=1,bg="white")
 }
 
+##############
+### beeStrip + mod
+##################
+data(iris)
+beeStripMod(iris$Sepal.Width,iris$Species,xlab="species",ylab="sepal length",main="beeStripMod() example")
+
+beeStripMod<-function(data,group,lab=rep(c(),length(data)),point_size=1.4,beeMethod="center",line_width=3.0,jitter=T,point_col=ifelse(is.list(data) %>% rep(20),viridis(length(data)+1)[1:length(data)],viridis(nlevels(group)+1)[1:nlevels(group)]),y_limits=c(ifelse(is.list(data),min(unlist(data)),min(data)),ifelse(is.list(data),max(unlist(data),max(data)))),mean=FALSE,sample_size=T,side=-1,red_median=F,stats=T,...){
+  
+  # if response is missing, assume data is a list
+  if(missing(group)){
+    if(is.list(data)==FALSE){
+      stop("enter your data either as a list or as a response variable and factor within a dataframe")
+    }
+  }
+  
+  if(is.list(data)){
+    print("data are a list")
+    number_groups<-length(group)
+    # get statistics you need to plot
+    boxplot_table<-boxplot(data,plot=F)
+    # create the plot
+    beeswarm(data,method=beeMethod,priority="density",pch=16,col=point_col,cex=point_size,side = side,bty='l',labels=lab,...)
+  }
+  
+  else{
+    number_groups<-nlevels(group)
+    boxplot_table<-boxplot(data~group,plot=F)
+    # create the plot
+    beeswarm(data~group,method=beeMethod,priority="density",pch=16,col=point_col,cex=point_size,side = side,bty='l',labels=lab,...)
+    if(stats==T){
+      print(TukeyHSD(aov(data~group)))
+      x = summary(aov(data~group))[[1]][["Pr(>F)"]][1] %>% round(4)
+      if(x ==0){
+        x = "p < 0.001"
+      }
+      else{
+        x = paste("p = ",x,sep="")
+      }
+      text(x=(median(1:number_groups)),y=max(data)*0.95,labels=paste("anova, ",x,sep=""),pos=1)
+    }
+  }
+  
+  x_values = 1:number_groups
+  point_col = point_col[1:number_groups]
+  scale = 0.05
+  
+  # plot the mean as a point
+  for(i in 1:number_groups){
+    points(x=x_values[i]+(scale*number_groups), y=boxplot_table$stats[3,i],cex=1.1,pch=16,col=ifelse(red_median==T,"red",point_col[i]))
+  }
+  # draw lines representing 1 and fourth quartiles
+  for(i in 1:number_groups){
+    lines(x=rep(x_values[i]+(scale*number_groups),2),y=c(boxplot_table$stats[1,i],boxplot_table$stats[2,i]),lwd=2)
+    lines(x=rep(x_values[i]+(scale*number_groups),2),y=c(boxplot_table$stats[4,i],boxplot_table$stats[5,i]),lwd=2)
+  }
+  
+  
+  # for plotting sample size below each group
+  if(sample_size==TRUE){
+      text(x=x_values+(scale*number_groups),y=min(data),paste("n = ",boxplot_table$n,sep=""),col="grey20")
+  }
+}
 
 
 
