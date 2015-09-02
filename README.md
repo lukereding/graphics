@@ -26,7 +26,7 @@ source-ing the code will download any needed packages not installed on your mach
 
 ### quantitative x categorical data
 
-Plot the data for each group as a histogram; include plain vanilla boxplot alongside. Like a typical scatterplot, this display is nice because it shows the actual data in a nice form (a histogram) alongside a statistical summary of the data (the boxplot).
+Plot the data for each group as a histogram; include plain vanilla boxplot alongside. Like a typical scatterplot, this display is nice because it shows the actual data in a nice form alongside a statistical summary of the data (a boxplot here, a regression line in a boxplot).
 
 `data(iris); beeStripBox(iris$Sepal.Length,iris$Species,xlab="species",ylab="sepal length",main="beeStripBox() example")`
 
