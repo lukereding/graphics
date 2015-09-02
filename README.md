@@ -26,9 +26,15 @@ source-ing the code will download any needed packages not installed on your mach
 
 ### quantitative x categorical data
 
+Plot the data for each group as a histogram; include plain vanilla boxplot alongside. Like a typical scatterplot, this display is nice because it shows the actual data in a nice form (a histogram) alongside a statistical summary of the data (the boxplot).
+
+`data(iris); beeStripBox(iris$Sepal.Length,iris$Species,xlab="species",ylab="sepal length",main="beeStripBox() example")`
+
+~[beeStripBox](https://github.com/lukereding/graphics/raw/master/examplePlots/beeStripBox.png)
+
 Plot the data for each group as a histogram; include modified boxplot from Tufte alongside each histogram
 
-`data(iris); beeStripMod(iris$Sepal.Width,iris$Species,xlab="species",ylab="sepal length",main="beeStripMod() example")`
+`beeStripMod(iris$Sepal.Width,iris$Species,xlab="species",ylab="sepal length",main="beeStripMod() example")`
 
 ![beeStripMod](https://github.com/lukereding/graphics/raw/master/examplePlots/beeStripMod.png)
 
