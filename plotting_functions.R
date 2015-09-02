@@ -700,8 +700,8 @@ beeStripMod<-function(data,group,lab=rep(c(),length(data)),point_size=1.4,beeMet
 ##################
 #data(iris)
 #beeStripBox(iris$Sepal.Length,iris$Species,xlab="species",ylab="sepal length",main="beeStripBox() example")
-
-beeStripBox<-function(data,group,lab=rep(c(),length(data)),point_size=1.4,beeMethod="center",line_width=3.0,jitter=T,point_col=ifelse(is.list(data) %>% rep(20),viridis(length(data)+1)[1:length(data)],viridis(nlevels(group)+1)[1:nlevels(group)]),y_limits=c(ifelse(is.list(data),min(unlist(data)),min(data)),ifelse(is.list(data),max(unlist(data),max(data)))),mean=FALSE,sample_size=T,side=-1,red_median=F,stats=T,box_thickness = 0.2,...){
+# TO DO: fix box color argument. can't get boxes to take on the right colors
+beeStripBox<-function(data,group,lab=rep(c(),length(data)),point_size=1.4,beeMethod="center",line_width=3.0,point_col=ifelse(is.list(data) %>% rep(20),viridis(length(data)+1)[1:length(data)],viridis(nlevels(group)+1)[1:nlevels(group)]),y_limits=c(ifelse(is.list(data),min(unlist(data)),min(data)),ifelse(is.list(data),max(unlist(data),max(data)))),mean=FALSE,sample_size=T,side=-1,red_median=F,stats=T,box_thickness = 0.2,box_color=FALSE,...){
   
   # if response is missing, assume data is a list
   if(missing(group)){
@@ -712,20 +712,22 @@ beeStripBox<-function(data,group,lab=rep(c(),length(data)),point_size=1.4,beeMet
   
   if(is.list(data)){
     print("data are a list")
-    number_groups<-length(group)
+    number_groups<-length(data)
+    point_col = point_col[1:number_groups]
     # get statistics you need to plot
     boxplot_table<-boxplot(data,plot=F)
     # create the plot
     beeswarm(data,method=beeMethod,priority="density",pch=16,col=point_col,cex=point_size,side = side,bty='l',labels=lab,...)
-    boxplot(data, main = "", axes = FALSE, at = 1:number_groups+0.2, xlab=" ", ylab=" ", add=TRUE ,boxwex = box_thickness,pars = list(boxcol = "black", medlty = "black", medpch=16, whisklty = c(1, 1),medcex = 0.7,  outcex = 0, staplelty = "blank"))
+    boxplot(data, main = "", axes = FALSE, at = 1:number_groups+0.2, xlab=" ", ylab=" ", add=TRUE ,boxwex = box_thickness,pars = list(boxcol = "black", medlty = 1, whisklty = c(1, 1), medcex = 0.7, outcex = 0, staplelty = "blank", boxcol = ifelse(box_color==TRUE,point_col,"black"), whiskcol = ifelse(box_color==TRUE,point_col,"black"), medcol = ifelse(box_color==TRUE,point_col,"black")))
   }
   
   else{
     number_groups<-nlevels(group)
     boxplot_table<-boxplot(data~group,plot=F)
+    point_col = point_col[1:number_groups]
     # create the plot
     beeswarm(data~group,method=beeMethod,priority="density",pch=16,col=point_col,cex=point_size,side = side,bty='l',labels=lab,...)
-    boxplot(data~group, add=TRUE, main = "", at = 1:number_groups+0.2, axes = FALSE, xlab=" ", ylab=" ",boxwex = box_thickness, pars = list(boxcol = "black", whisklty = c(1, 1),medcex = 0.7,  outcex = 0, staplelty = "blank"))
+    boxplot(data~group, add=TRUE, main = "", at = 1:number_groups+0.2, axes = FALSE, xlab=" ", ylab=" ",boxwex = box_thickness, pars = list(boxcol = "black", medlty = 1, whisklty = c(1, 1), medcex = 0.7, outcex = 0, staplelty = "blank", boxcol = ifelse(box_color==TRUE,point_col,"black"),whiskcol = ifelse(box_color==TRUE,point_col,"black"), medcol = ifelse(box_color==TRUE,point_col[1:number_groups],"black")))
     
     if(stats==T){
       print(TukeyHSD(aov(data~group)))
