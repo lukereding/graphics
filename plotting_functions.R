@@ -695,6 +695,63 @@ beeStripMod<-function(data,group,lab=rep(c(),length(data)),point_size=1.4,beeMet
 }
 
 
+##############
+### beeStrip + boxplot
+##################
+#data(iris)
+#beeStripBox(iris$Sepal.Length,iris$Species,xlab="species",ylab="sepal length",main="beeStripBox() example")
+
+beeStripBox<-function(data,group,lab=rep(c(),length(data)),point_size=1.4,beeMethod="center",line_width=3.0,jitter=T,point_col=ifelse(is.list(data) %>% rep(20),viridis(length(data)+1)[1:length(data)],viridis(nlevels(group)+1)[1:nlevels(group)]),y_limits=c(ifelse(is.list(data),min(unlist(data)),min(data)),ifelse(is.list(data),max(unlist(data),max(data)))),mean=FALSE,sample_size=T,side=-1,red_median=F,stats=T,box_thickness = 0.2,...){
+  
+  # if response is missing, assume data is a list
+  if(missing(group)){
+    if(is.list(data)==FALSE){
+      stop("enter your data either as a list or as a response variable and factor within a dataframe")
+    }
+  }
+  
+  if(is.list(data)){
+    print("data are a list")
+    number_groups<-length(group)
+    # get statistics you need to plot
+    boxplot_table<-boxplot(data,plot=F)
+    # create the plot
+    beeswarm(data,method=beeMethod,priority="density",pch=16,col=point_col,cex=point_size,side = side,bty='l',labels=lab,...)
+    boxplot(data, main = "", axes = FALSE, at = 1:number_groups+0.2, xlab=" ", ylab=" ", add=TRUE ,boxwex = box_thickness,pars = list(boxcol = "black", medlty = "black", medpch=16, whisklty = c(1, 1),medcex = 0.7,  outcex = 0, staplelty = "blank"))
+  }
+  
+  else{
+    number_groups<-nlevels(group)
+    boxplot_table<-boxplot(data~group,plot=F)
+    # create the plot
+    beeswarm(data~group,method=beeMethod,priority="density",pch=16,col=point_col,cex=point_size,side = side,bty='l',labels=lab,...)
+    boxplot(data~group, add=TRUE, main = "", at = 1:number_groups+0.2, axes = FALSE, xlab=" ", ylab=" ",boxwex = box_thickness, pars = list(boxcol = "black", whisklty = c(1, 1),medcex = 0.7,  outcex = 0, staplelty = "blank"))
+    
+    if(stats==T){
+      print(TukeyHSD(aov(data~group)))
+      x = summary(aov(data~group))[[1]][["Pr(>F)"]][1] %>% round(4)
+      if(x ==0){
+        x = "p < 0.001"
+      }
+      else{
+        x = paste("p = ",x,sep="")
+      }
+      text(x=(median(1:number_groups)),y=max(data),labels=paste("anova, ",x,sep=""),pos=1)
+    }
+    
+  }
+  
+  x_values = 1:number_groups
+  point_col = point_col[1:number_groups]
+  scale = 0.05
+  
+  # for plotting sample size below each group
+  if(sample_size==TRUE){
+    text(x=x_values+(scale*number_groups),y=min(data)*0.99,paste("n = ",boxplot_table$n,sep=""),col="grey20")
+  }
+}
+
+
 
 
 ## modified boxplot
