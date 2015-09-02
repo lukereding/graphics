@@ -30,7 +30,7 @@ Plot the data for each group as a histogram; include plain vanilla boxplot along
 
 `data(iris); beeStripBox(iris$Sepal.Length,iris$Species,xlab="species",ylab="sepal length",main="beeStripBox() example")`
 
-~[beeStripBox](https://github.com/lukereding/graphics/raw/master/examplePlots/beeStripBox.png)
+~[beeStripBox](https://raw.githubusercontent.com/lukereding/graphics/master/examplePlots/beeStripBox.png)
 
 Plot the data for each group as a histogram; include modified boxplot from Tufte alongside each histogram
 
