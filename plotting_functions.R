@@ -718,7 +718,7 @@ beeStripBox<-function(data,group,lab=rep(c(),length(data)),point_size=1.4,beeMet
     boxplot_table<-boxplot(data,plot=F)
     # create the plot
     beeswarm(data,method=beeMethod,priority="density",pch=16,col=point_col,cex=point_size,side = side,bty='l',labels=lab,...)
-    boxplot(data, main = "", axes = FALSE, at = 1:number_groups+0.2, xlab=" ", ylab=" ", add=TRUE ,boxwex = box_thickness,pars = list(boxcol = "black", medlty = 1, whisklty = c(1, 1), medcex = 0.7, outcex = 0, staplelty = "blank", boxcol = ifelse(box_color==TRUE,point_col,"black"), whiskcol = ifelse(box_color==TRUE,point_col,"black"), medcol = ifelse(box_color==TRUE,point_col,"black")))
+    boxplot(data, main = "", axes = FALSE, at = 1:number_groups+0.2, xlab=" ", ylab=" ", border = ifelse(box_color==T,point_col,"black"), add=TRUE ,boxwex = box_thickness,pars = list(medlty = 1, whisklty = c(1, 1), medcex = 0.7, outcex = 0, staplelty = "blank"))
   }
   
   else{
@@ -727,7 +727,7 @@ beeStripBox<-function(data,group,lab=rep(c(),length(data)),point_size=1.4,beeMet
     point_col = point_col[1:number_groups]
     # create the plot
     beeswarm(data~group,method=beeMethod,priority="density",pch=16,col=point_col,cex=point_size,side = side,bty='l',labels=lab,...)
-    boxplot(data~group, add=TRUE, main = "", at = 1:number_groups+0.2, axes = FALSE, xlab=" ", ylab=" ",boxwex = box_thickness, pars = list(boxcol = "black", medlty = 1, whisklty = c(1, 1), medcex = 0.7, outcex = 0, staplelty = "blank", boxcol = ifelse(box_color==TRUE,point_col,"black"),whiskcol = ifelse(box_color==TRUE,point_col,"black"), medcol = ifelse(box_color==TRUE,point_col[1:number_groups],"black")))
+    boxplot(data~group, add=TRUE, main = "", at = 1:number_groups+0.2, axes = FALSE, xlab=" ", ylab=" ",border = ifelse(box_color==T,point_col,"black"), boxwex = box_thickness, pars = list(medlty = 1, whisklty = c(1, 1), medcex = 0.7, outcex = 0, staplelty = "blank"))
     
     if(stats==T){
       print(TukeyHSD(aov(data~group)))
@@ -744,7 +744,6 @@ beeStripBox<-function(data,group,lab=rep(c(),length(data)),point_size=1.4,beeMet
   }
   
   x_values = 1:number_groups
-  point_col = point_col[1:number_groups]
   scale = 0.05
   
   # for plotting sample size below each group
