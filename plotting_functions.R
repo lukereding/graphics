@@ -187,13 +187,13 @@ beeStrip<-function(data,lab=rep(c(),length(data)),point_size=1.4,beeMethod="cent
 #data should be a list of vectors you want to plot
 
 # examples
-# strip(list(rnorm(50,5),rnorm(20,10)),points=21)
+# strip(list(rnorm(50,5),rnorm(20,10)))
 # strip(list(rpois(50,5),rpois(20,3),rnorm(100,7)),type="ci",lab=c("a","b","c"),xlab="group",ylab="response")
 # lots of groups:
 #strip(list(rpois(50,5),rpois(20,3),rnorm(100,7),rnorm(45,2),rnorm(90,9)),type="ci",lab=c("a","b","c","d","e"),xlab="group",ylab="response")
 
-strip<-function(data,lab=rep(c(),length(data)),type="se",jitter=T,points=16,xlab="",ymin="determine",ymax="determine",point_size=1.5,use_black=F,...){
-  par(bty="l",lwd=1.7)
+strip<-function(data,lab=rep(c(),length(data)),type="se",jitter=T,points=16,xlab="",ymin="determine",ymax="determine",point_size=1.5,mean_col = "red",cols = viridis(length(data)+2)[1:length(data)],...){
+  par(bty="l")
   
   # error checking:
   # if there are NAs in your dataset, throw an error
@@ -204,15 +204,6 @@ strip<-function(data,lab=rep(c(),length(data)),type="se",jitter=T,points=16,xlab
   number_groups<-length(data)
   factor_names<-lab
   
-  # colors:
-  if(use_black==F){
-    cols<-c("#3EB489","#F21A00","#5B1A18","#E1AF00","#446455")
-    cols_points<-c("#3EB48970","#F21A0070","#5B1A1870","#E1AF0070","#44645570")
-  }
-  else{
-    cols<-rep("black",6)
-    cols_points<-rep("#00000050",6)
-  }
   
   if(ymin=="determine"&ymax=="determine"){
     maximum_value = -1000
@@ -242,7 +233,7 @@ strip<-function(data,lab=rep(c(),length(data)),type="se",jitter=T,points=16,xlab
   else{
     x_values<-seq(0.2,0.8,length.out=number_groups)
     # offset is the distance between the data points and their means
-    offset <- 0.15 / number_groups
+    offset <- 0.2 / number_groups
   }
   
   # use lapply to extract the means
@@ -274,7 +265,7 @@ strip<-function(data,lab=rep(c(),length(data)),type="se",jitter=T,points=16,xlab
   
   # plot the means
   for(i in 1:length(data)){
-    points(x=x_values[i]+offset,y=means[[i]],cex=point_size*1.3,pch=16,col=cols[i])
+    points(x=x_values[i]+offset,y=means[[i]],cex=point_size*1.3,pch=16,col=mean_col)
   }
   
   
@@ -284,13 +275,13 @@ strip<-function(data,lab=rep(c(),length(data)),type="se",jitter=T,points=16,xlab
   if(jitter==F){
     # now to draw the points
     for(i in 1:number_groups){
-      points(x=rep(x_values[i],length(data[[i]])),y=data[[i]],pch=points,col=cols_points[i])
+      points(x=rep(x_values[i],length(data[[i]])),y=data[[i]],pch=points,col=cols[i])
     }
   }
   
   else if(jitter==T){
     for(i in 1:number_groups){
-      points(x=rep(x_values[i],length(data[[i]]))+rnorm(length(data[[i]]),0,0.02/(number_groups/2)),y=data[[i]],pch=points,col=cols_points[i],cex=point_size)
+      points(x=rep(x_values[i],length(data[[i]]))+rnorm(length(data[[i]]),0,0.02/(number_groups/2)),y=data[[i]],pch=points,col=cols[i],cex=point_size)
     }
   }
   par(bty="o",lwd=1)
