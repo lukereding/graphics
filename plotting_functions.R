@@ -269,7 +269,7 @@ strip<-function(data,lab=rep(c(),length(data)),type="se",jitter=T,points=16,xlab
   }
   
   
-  #axis(side=1,at=x_values,labels=lab)
+  axis(side=1,at=x_values,labels=lab)
   
   
   if(jitter==F){
