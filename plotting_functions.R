@@ -739,7 +739,10 @@ beeStripBox<-function(data,group,lab=rep(c(),length(data)),point_size=1.4,beeMet
   
   # for plotting sample size below each group
   if(sample_size==TRUE){
-    text(x=x_values+(scale*number_groups),y=min(data)*0.99,paste("n = ",boxplot_table$n,sep=""),col="grey20")
+    for(i in 1:number_groups){
+      text(x=x_values[i]+(scale*number_groups),y=min(data[[i]])*0.99,paste("n = ",boxplot_table$n,sep=""),col="grey20")
+    }
+    
   }
 }
 
