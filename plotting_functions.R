@@ -3,7 +3,8 @@ if (!"dplyr" %in% installed.packages()) install.packages("dplyr")
 if (!"wesanderson" %in% installed.packages()) install.packages("wesanderson")
 if (!"magrittr" %in% installed.packages()) install.packages("magrittr")
 if (!"beeswarm" %in% installed.packages()) install.packages("beeswarm")
-library(beeswarm)
+if (!"viridis" %in% installed.packages()) install.packages("viridis")
+library(beeswarm) 
 library(dplyr)
 library(wesanderson)
 library(magrittr)
@@ -27,9 +28,28 @@ cols<-c(ruby,mint,golden,slate,orange,sky)
 # stars()
 
 
-## line for mean + data
-## inpout data as a list; a mean is returned for each element of list. add median == T to add a diamond median
-## example:
+#' line for mean + data
+#' input data as a list; a mean is returned for each element of list. add median == T to add a diamond median
+#' @param data input your data as a list where length(list) = number of groups
+#' @param lab labels for groups
+#' @param point_size size of points
+#' @param line_color color of line for mean
+#' @param line_width
+#' @param jitter defaults to T
+#' @param point_col defeaults to viridis colors
+#' @param ylim y limits
+#' @param median plot median? defaults to false
+#' @param rug plot 1-D rug plot?
+#' @param sample_size defaults to true
+#' @param IQR include line for IQR? defaults to false
+#' @kewords simple
+#' @examples simple(x,main="simple() defaults") # using the defaults
+#' @examples simple(x,jitter=F) # without jitter doesn't look as good
+#' @examples simple(x,line_col="black",point_col=c(ruby,mint,slate),ylab="measurement",xlab="group",lab=c("A","B","C"),rug=T)
+#' @examples simple(list(rnorm(50,50,5),rnorm(30,40,6),rnorm(10,60,2),rnorm(60,50,10),rnorm(30,39,4)),point_col=wes_palette(5, name = "Zissou"),line_color="black",median=T,main="simple() dressed up")
+#' @examples simple(list(rnorm(24,10,2),rchisq(20,5),rexp(40,1/5),runif(40,5,15)),lab=c("normal","chi-squared","exponetial","uniform"),point_col=c(ruby,mint,slate,"goldenrod"),line_color="black",median=T)
+#' simple()
+
 # x <- list(rnorm(40,40,5),rnorm(20,35,2),rnorm(25,41,2))
 # simple(x,main="simple() defaults") # using the defaults
 ### simple(x,jitter=F) # without jitter doesn't look as good
