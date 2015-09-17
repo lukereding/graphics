@@ -20,6 +20,10 @@ sky <- rgb(95/255,188/255,212/255,1)
 
 cols<-c(ruby,mint,golden,slate,orange,sky)
 
+# some nice colors maps:
+# viridis(10)
+# colorRampPalette(brewer.pal(9, "GnBu"))
+
 
 
 # things to look into:
