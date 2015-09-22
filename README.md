@@ -44,6 +44,23 @@ Same, but leave out the modified boxplot. Option to include the IQR (shown here)
 
 ![beestrip](https://github.com/lukereding/graphics/raw/master/examplePlots/beeStrip.png)
 
+Plot the data jittered, draw line at the mean
+
+`simple(list(iris %>% filter(Species=="setosa") %>% .$Sepal.Length, iris %>% filter(Species=="versicolor") %>% .$Sepal.Length, iris %>% filter(Species=="virginica") %>% .$Sepal.Length),lab=c("setosa","versicolor","virginica"),ylab="sepal length",main="simple()",xlab="species")`
+![simple](https://github.com/lukereding/graphics/raw/master/examplePlots/simple.png)
+
+Very similar, but use beeswarm() to plot the data to avoid overplotting
+
+`beeStrip(list(iris %>% filter(Species=="setosa") %>% .$Sepal.Length, iris %>% filter(Species=="versicolor") %>% .$Sepal.Length, iris %>% filter(Species=="virginica") %>% .$Sepal.Length),lab=c("setosa","versicolor","virginica"),ylab="sepal length",main="beeStrip()",xlab="species")`
+![beeStrip](https://github.com/lukereding/graphics/raw/master/examplePlots/beeStrip.png)
+
+Similar, but show the mean as a dot. Option standard error / confidence interval:
+
+`strip(list(iris %>% filter(Species=="setosa") %>% .$Sepal.Length, iris %>% filter(Species=="versicolor") %>% .$Sepal.Length, iris %>% filter(Species=="virginica") %>% .$Sepal.Length),lab=c("setosa","versicolor","virginica"),ylab="sepal length",main="strip()",xlab="species",mean_col="black",point_size=1.4,type="ci")`
+![strip](https://github.com/lukereding/graphics/raw/master/examplePlots/strip.png)
+
+
+
 Bar plot, but show the data jittered
 
 `bar(list(iris %>% filter(Species=="setosa") %>% .$Sepal.Length, iris %>% filter(Species=="versicolor") %>% .$Sepal.Length, iris %>% filter(Species=="virginica") %>% .$Sepal.Length),median=T,CI=T,lab=c("setosa","versicolor","virginica"),ylab="sepal length",main="bar() example")`   
