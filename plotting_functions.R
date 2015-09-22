@@ -62,6 +62,7 @@ cols<-c(ruby,mint,golden,slate,orange,sky)
 # simple(list(rnorm(50,50,5),rnorm(30,40,6),rnorm(10,60,2),rnorm(60,50,10),rnorm(30,39,4)),point_col=wes_palette(5, name = "Zissou"),line_color="black",median=T,main="simple() dressed up")
 ## simple(list(rnorm(24,10,2),rchisq(20,5),rexp(40,1/5),runif(40,5,15)),lab=c("normal","chi-squared","exponetial","uniform"),point_col=c(ruby,mint,slate,"goldenrod"),line_color="black",median=T)
 # simple(list(rnorm(50,50,5),rnorm(30,40,6),rnorm(10,60,2),rnorm(60,50,10),rnorm(30,39,4)),point_col=wes_palette(5, name = "Zissou"),line_color="black",median=T,main="simple()",xlab="group",ylab="value",lab=c("A","B","C","D","E"))
+# simple(list(iris %>% filter(Species=="setosa") %>% .$Sepal.Length, iris %>% filter(Species=="versicolor") %>% .$Sepal.Length, iris %>% filter(Species=="virginica") %>% .$Sepal.Length),lab=c("setosa","versicolor","virginica"),ylab="sepal length",main="simple()",xlab="species")
 
 # to do: replace rug place with marginal density plots of each group?
 
@@ -171,6 +172,7 @@ simple<-function(data,grouping=NULL,lab=NA,point_size=1.2,line_color="red",line_
 ## beeStrip(list(rnorm(50,50,5),rnorm(30,40,6),rnorm(10,60,2),rnorm(60,50,10),rnorm(30,39,4)),point_col=wes_palette(5, name = "Zissou"),line_color="black",median=T)
 # beeStrip(list(iris %>% filter(Species=="setosa") %>% .$Sepal.Length, iris %>% filter(Species=="versicolor") %>% .$Sepal.Length, iris %>% filter(Species=="virginica") %>% .$Sepal.Length),point_col=viridis(3),line_color="black",IQR=T,lab=c("setosa","versicolor","virginica"),xlab="species",ylab="sepal length")
 # beeStrip(list(rnorm(50,50,5),rnorm(30,40,6),rnorm(10,60,2),rnorm(60,50,10),rnorm(30,39,4)),point_col=wes_palette(5, name = "Zissou"),line_color="grey30",IQR=T)
+# beeStrip(list(iris %>% filter(Species=="setosa") %>% .$Sepal.Length, iris %>% filter(Species=="versicolor") %>% .$Sepal.Length, iris %>% filter(Species=="virginica") %>% .$Sepal.Length),lab=c("setosa","versicolor","virginica"),ylab="sepal length",main="beeStrip()",xlab="species")
 
 beeStrip<-function(data,lab=rep(c(),length(data)),point_size=1.4,beeMethod="center",line_color="red",line_width=3.0,jitter=T,point_col=viridis(length(data)+2)[1:length(data)],y_limits=c(min(unlist(data),na.rm=T),max(unlist(data),na.rm=T)),median=FALSE,rug=TRUE,sample_size=T,IQR=F,side=-1,...){
   
@@ -240,6 +242,7 @@ beeStrip<-function(data,lab=rep(c(),length(data)),point_size=1.4,beeMethod="cent
 # strip(list(rpois(50,5),rpois(20,3),rnorm(100,7)),type="ci",lab=c("a","b","c"),xlab="group",ylab="response")
 # lots of groups:
 # strip(list(rpois(50,5),rpois(20,3),rnorm(100,7),rnorm(45,2),rnorm(90,9)),type="ci",lab=c("a","b","c","d","e"),xlab="group",ylab="value",mean_col="black",col=viridis(7)[1:5] %>% addAlpha(0.5))
+# strip(list(iris %>% filter(Species=="setosa") %>% .$Sepal.Length, iris %>% filter(Species=="versicolor") %>% .$Sepal.Length, iris %>% filter(Species=="virginica") %>% .$Sepal.Length),lab=c("setosa","versicolor","virginica"),ylab="sepal length",main="beeStrip()",xlab="species",mean_col="black",point_size=1.4,type="ci")
 
 strip<-function(data,lab=rep(c(),length(data)),type="se",jitter=T,points=16,xlab="",ymin="determine",ymax="determine",point_size=1.2,mean_col = "red",cols = viridis(length(data)+2)[1:length(data)],...){
   par(bty="l")
@@ -293,14 +296,14 @@ strip<-function(data,lab=rep(c(),length(data)),type="se",jitter=T,points=16,xlab
     std_dev<-lapply(data,sd)
     for(i in 1:length(data)){
       std_error <- std_dev[[i]] / sqrt(length(data[[i]]))
-      arrows(x_values[i]+offset,means[[i]]-std_error,x_values[i]+offset,means[[i]]+std_error,angle=90,code=3,length=0)
+      arrows(x_values[i]+offset,means[[i]]-std_error,x_values[i]+offset,means[[i]]+std_error,angle=90,code=3,length=0,lwd=2)
     }
   }
 
   if(type=="sd"){
     std_dev<-lapply(data,sd)
     for(i in 1:length(data)){
-      arrows(x_values[i]+offset,means[[i]]-std_dev[[i]],x_values[i]+offset,means[[i]]+std_dev[[i]],angle=90,code=3,length=0)
+      arrows(x_values[i]+offset,means[[i]]-std_dev[[i]],x_values[i]+offset,means[[i]]+std_dev[[i]],angle=90,code=3,length=0,lwd=2)
     }
   }
   
@@ -308,13 +311,13 @@ strip<-function(data,lab=rep(c(),length(data)),type="se",jitter=T,points=16,xlab
     std_dev<-lapply(data,sd)
     for(i in 1:length(data)){
       std_error <- std_dev[[i]] / sqrt(length(data[[i]]))
-      arrows(x_values[i]+offset,t.test(data[[i]])$conf[1],x_values[i]+offset,t.test(data[[i]])$conf[2],angle=90,code=3,length=0)
+      arrows(x_values[i]+offset,t.test(data[[i]])$conf[1],x_values[i]+offset,t.test(data[[i]])$conf[2],angle=90,code=3,length=0,lwd=2)
     }
   }
   
   # plot the means
   for(i in 1:length(data)){
-    points(x=x_values[i]+offset,y=means[[i]],cex=point_size*1.3,pch=16,col=mean_col)
+    points(x=x_values[i]+offset,y=means[[i]],cex=point_size*1.1,pch=16,col=mean_col)
   }
   
   
