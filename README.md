@@ -46,7 +46,7 @@ Plot the data jittered, draw line at the mean
 Very similar, but use beeswarm() to plot the data to avoid overplotting
 
 `beeStrip(list(iris %>% filter(Species=="setosa") %>% .$Sepal.Length, iris %>% filter(Species=="versicolor") %>% .$Sepal.Length, iris %>% filter(Species=="virginica") %>% .$Sepal.Length),lab=c("setosa","versicolor","virginica"),ylab="sepal length",main="beeStrip()",xlab="species")`
-![beeStrip](https://github.com/lukereding/graphics/raw/master/examplePlots/beeStrip.png)
+![beeStrip](https://github.com/lukereding/graphics/raw/master/examplePlots/beeeStrip.png)
 
 Similar, but show the mean as a dot. Option standard error / confidence interval:
 
