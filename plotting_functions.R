@@ -1,4 +1,4 @@
-cat("Plotting functions:\nstrip -- show the average as a point with option SE / CI, shows the data\nbar -- barplot, still needs some work\nscatter -- scatterplot\nmod -- modified box plot\nhistogram -- self-explanatory\nsimple -- draws a line for the mean of each group and plots the data points\nbeeStrip -- like simple, but plotted using the beeswarm package so no alpha is needed\naddAlpha -- add transparancy to any color. pass the color and alpha value in [0,1]\n\nStats functions:\nmonte_unpaired -- monte carlo permutation test, two unpaired samples\nmonte_paired -- monte carlo permutation test, two paired samples\n")  
+#cat("Plotting functions:\nstrip -- show the average as a point with option SE / CI, shows the data\nbar -- barplot, still needs some work\nscatter -- scatterplot\nmod -- modified box plot\nhistogram -- self-explanatory\nsimple -- draws a line for the mean of each group and plots the data points\nbeeStrip -- like simple, but plotted using the beeswarm package so no alpha is needed\naddAlpha -- add transparancy to any color. pass the color and alpha value in [0,1]\n\nStats functions:\nmonte_unpaired -- monte carlo permutation test, two unpaired samples\nmonte_paired -- monte carlo permutation test, two paired samples\n")  
 if (!"dplyr" %in% installed.packages()) install.packages("dplyr")
 if (!"wesanderson" %in% installed.packages()) install.packages("wesanderson")
 if (!"magrittr" %in% installed.packages()) install.packages("magrittr")
@@ -64,15 +64,40 @@ cols<-c(ruby,mint,golden,slate,orange,sky)
 
 # to do: replace rug place with marginal density plots of each group?
 
-simple<-function(data,lab=rep(c(),length(data)),point_size=1.2,line_color="red",line_width=3.0,jitter=T,point_col=viridis(length(data)+2)[1:length(data)],y_limits=c(min(unlist(data),na.rm=T),max(unlist(data),na.rm=T)),median=FALSE,rug=TRUE,sample_size=T,IQR=F,...){
+simple<-function(data,grouping=NULL,lab=rep(c(),length(data)),point_size=1.2,line_color="red",line_width=3.0,jitter=T,point_col=viridis(length(data)+2)[1:length(data)],y_limits=c(min(unlist(data),na.rm=T),max(unlist(data),na.rm=T)),median=FALSE,rug=TRUE,sample_size=T,IQR=F,...){
+  # can't figure out how to make inputting the data more flexible (e.g. with a formula)
+  # data_name <- deparse(substitute(data))
+#   
+#   # consider response~some_factor:
+#   if(grep("~",data_name) %>% length == 1){
+#     grouping <- strsplit(data_name,"~")[[3]][1]
+#     data <- strsplit(data_name,"~")[[2]][1]
+#     
+#     grouping <- get(grouping,env=globalenv())
+#     
+#     # convert to a list
+#     x<-list()
+#     for(i in 1:length(grouping)){
+#       list[[i]] <- data$grouping[i]
+#     }
+#     data <- x
+#   }
+#   
+#   # consider dataframe, factor
+#   else if(is.na(grouping)==FALSE){
+#     x<-list()
+#     for(i in 1:length(grouping)){
+#       x[[i]] <- data$grouping[i]
+#     }
+#     data <- x
+#   }
   
-  # make sure the data is a list; in the future I need to change the code to accomodate other types of data input (e.g. dataframes with y~x)
-  if(is.list(data)!=TRUE){
-    stop("input your data as a list")
+  # consdier a list
+  if(is.list(data)==FALSE){
+    stop("however you input the data, try some other way")
   }
   
   number_groups<-length(data)
-  
   # to get nice x values for plotting, we'll use those generate by barplot()
   x_values<-barplot(rep(1,number_groups),plot=F)
   
@@ -89,7 +114,7 @@ simple<-function(data,lab=rep(c(),length(data)),point_size=1.2,line_color="red",
   
   # plot the mean as a line
   for(i in 1:length(data)){
-    lines(x=c(x_values[i]-(0.05*xRange),x_values[i]+(0.05*xRange)),y=c(rep(mean(data[[i]],na.rm=T),2)),col=line_color,lwd=line_width)
+    lines(x=c(x_values[i]-(0.06*xRange),x_values[i]+(0.06*xRange)),y=c(rep(mean(data[[i]],na.rm=T),2)),col=line_color,lwd=line_width)
   }
   
   # to plot the IQR:
@@ -99,7 +124,7 @@ simple<-function(data,lab=rep(c(),length(data)),point_size=1.2,line_color="red",
       lines(x=c(x_values[i],x_values[i]),y=c(p$stats[2,i],p$stats[4,i]),lwd=2,col=addAlpha(line_color))
     }
   }
-  
+
   # create x axis
   axis(side=1,at=x_values,labels=lab)
   
@@ -123,7 +148,7 @@ simple<-function(data,lab=rep(c(),length(data)),point_size=1.2,line_color="red",
   # for rug plotting:
   if(rug==T){
     for(i in 1:length(data)){
-      rug(data[[i]],side=4,col=addAlpha(point_col[i],0.4),lwd=2)
+      rug(data[[i]],side=4,col=addAlpha(point_col[i],0.4),lwd=4)
     }
   }
   
@@ -147,7 +172,7 @@ simple<-function(data,lab=rep(c(),length(data)),point_size=1.2,line_color="red",
 # beeStrip(list(iris %>% filter(Species=="setosa") %>% .$Sepal.Length, iris %>% filter(Species=="versicolor") %>% .$Sepal.Length, iris %>% filter(Species=="virginica") %>% .$Sepal.Length),point_col=viridis(3),line_color="black",IQR=T,lab=c("setosa","versicolor","virginica"),xlab="species",ylab="sepal length")
 # beeStrip(list(rnorm(50,50,5),rnorm(30,40,6),rnorm(10,60,2),rnorm(60,50,10),rnorm(30,39,4)),point_col=wes_palette(5, name = "Zissou"),line_color="grey30",IQR=T)
 
-beeStrip<-function(data,lab=rep(c(),length(data)),point_size=1.4,beeMethod="center",line_color="red",line_width=3.0,jitter=T,point_col=viridis(length(data)+1)[1:length(data)],y_limits=c(min(unlist(data),na.rm=T),max(unlist(data),na.rm=T)),median=FALSE,rug=TRUE,sample_size=T,IQR=F,side=-1,...){
+beeStrip<-function(data,lab=rep(c(),length(data)),point_size=1.4,beeMethod="center",line_color="red",line_width=3.0,jitter=T,point_col=viridis(length(data)+2)[1:length(data)],y_limits=c(min(unlist(data),na.rm=T),max(unlist(data),na.rm=T)),median=FALSE,rug=TRUE,sample_size=T,IQR=F,side=-1,...){
   
   # make sure the data is a list; in the future I need to change the code to accomodate other types of data input (e.g. dataframes with y~x)
   if(is.list(data)!=TRUE){
@@ -214,7 +239,7 @@ beeStrip<-function(data,lab=rep(c(),length(data)),point_size=1.4,beeMethod="cent
 # strip(list(rnorm(50,5),rnorm(20,10)))
 # strip(list(rpois(50,5),rpois(20,3),rnorm(100,7)),type="ci",lab=c("a","b","c"),xlab="group",ylab="response")
 # lots of groups:
-#strip(list(rpois(50,5),rpois(20,3),rnorm(100,7),rnorm(45,2),rnorm(90,9)),type="ci",lab=c("a","b","c","d","e"),xlab="group",ylab="response")
+# strip(list(rpois(50,5),rpois(20,3),rnorm(100,7),rnorm(45,2),rnorm(90,9)),type="ci",lab=c("a","b","c","d","e"),xlab="group",ylab="response",mean_col="black")
 
 strip<-function(data,lab=rep(c(),length(data)),type="se",jitter=T,points=16,xlab="",ymin="determine",ymax="determine",point_size=1.2,mean_col = "red",cols = viridis(length(data)+2)[1:length(data)],...){
   par(bty="l")
@@ -243,8 +268,8 @@ strip<-function(data,lab=rep(c(),length(data)),type="se",jitter=T,points=16,xlab
   }
   
   else{
-    maximum_value=ymax
-    minimum_value=ymin
+    maximum_value=ymax*1.05
+    minimum_value=ymin*1.05
   }
 
   
@@ -268,14 +293,14 @@ strip<-function(data,lab=rep(c(),length(data)),type="se",jitter=T,points=16,xlab
     std_dev<-lapply(data,sd)
     for(i in 1:length(data)){
       std_error <- std_dev[[i]] / sqrt(length(data[[i]]))
-      arrows(x_values[i]+offset,means[[i]]-std_error,x_values[i]+offset,means[[i]]+std_error,angle=90,code=3,length=0.07)
+      arrows(x_values[i]+offset,means[[i]]-std_error,x_values[i]+offset,means[[i]]+std_error,angle=90,code=3,length=0)
     }
   }
 
   if(type=="sd"){
     std_dev<-lapply(data,sd)
     for(i in 1:length(data)){
-      arrows(x_values[i]+offset,means[[i]]-std_dev[[i]],x_values[i]+offset,means[[i]]+std_dev[[i]],angle=90,code=3,length=0.07)
+      arrows(x_values[i]+offset,means[[i]]-std_dev[[i]],x_values[i]+offset,means[[i]]+std_dev[[i]],angle=90,code=3,length=0)
     }
   }
   
@@ -283,7 +308,7 @@ strip<-function(data,lab=rep(c(),length(data)),type="se",jitter=T,points=16,xlab
     std_dev<-lapply(data,sd)
     for(i in 1:length(data)){
       std_error <- std_dev[[i]] / sqrt(length(data[[i]]))
-      arrows(x_values[i]+offset,t.test(data[[i]])$conf[1],x_values[i]+offset,t.test(data[[i]])$conf[2],angle=90,code=3,length=0.07)
+      arrows(x_values[i]+offset,t.test(data[[i]])$conf[1],x_values[i]+offset,t.test(data[[i]])$conf[2],angle=90,code=3,length=0)
     }
   }
   
@@ -312,102 +337,6 @@ strip<-function(data,lab=rep(c(),length(data)),type="se",jitter=T,points=16,xlab
 }
 
 
-#########################################################
-
-
-# strip2 works fine, but it only accepts dataframes
-# to increase flexibility, I've introduced strip(), which takes a list of vectors you want to plot
-# it's a lot more flexible
-strip2<-function(response,group,data=dat,lab=levels(group),type="se",jitter=T,points=16,...){
-  par(bty="l",lwd=1.7)
-  if(is.factor(group)!=TRUE){
-    warning("'group' is not a factor: converting now")
-    group<-factor(group)
-  }
-  
-  number_groups<-nlevels(group)
-  factor_names<-levels(group)
-  boxplot_table<-boxplot(response~group,plot=F)
-  
-  # colors:
-  cols<-c("#3B9AB2","#F21A00","#5B1A18","#E1AF00","#446455")
-  cols_points<-c("#3B9AB270","#F21A0070","#5B1A1870","#E1AF0070","#44645570")
-  
-  plot(c(0,1),c(min(response),max(response)),type="n",xaxt="n",...)
-  
-  if(number_groups == 1){
-    x_values = 0.5
-    offset= 0.15
-  }
-  else{
-    x_values<-seq(0.2,0.8,length.out=number_groups)
-    # offset is the distance between the data points and their means
-    offset <- 0.15 / number_groups
-  }
-  
-
-  
-  # use tapply to extract the means
-  means<-tapply(response,group,mean)
-  
-  
-  if(type=="se"){
-    # now for +- one s.e.
-    std_dev<-tapply(response,group,sd)
-    std_error <- std_dev / sqrt(boxplot_table$n)
-    # draw standard errors:
-    for(i in 1:number_groups){
-      arrows(x_values[i]+offset,means[i]-std_error[i],x_values[i]+offset,means[i]+std_error[i],angle=90,code=3,length=0.07)
-    }
-  }
-  
-  if(type=="sd"){
-    # now for +- one s.e.
-    std_dev<-tapply(response,group,sd)
-    # draw standard deviations:
-    for(i in 1:number_groups){
-      arrows(x_values[i]+offset,means[i]-std_dev[i],x_values[i]+offset,means[i]+std_dev[i],angle=90,code=3,length=0.07)
-    }
-  }
-  
-  if(type=="ci"){
-    std_dev<-tapply(response,group,sd)
-    std_error <- std_dev / sqrt(boxplot_table$n)
-    for(i in 1:number_groups){
-      arrows(x_values[i]+offset,means[i]-(1.96*std_error[i]),x_values[i]+offset,means[i]+(1.96*std_error[i]),angle=90,code=3,length=0.07)
-    }
-  }
-  
-  if(type=="cred"){
-    cred<-tapply(response,group,credible_intervals)
-    print("error bars are credible intervals determined by 100,000 permutations")
-    for(i in 1:number_groups){
-      arrows(x_values[i]+offset,cred[[i]][[1]],x_values[i]+offset,cred[[i]][[2]],angle=90,code=3,length=0.07)
-    }
-  }
-  
-  # plot the means
-  points(x=x_values+offset, y=means,cex=1.5,pch=16,col=cols)
-  
-  
-  axis(side=1,at=x_values,labels=lab)
-  
-  
-  if(jitter==F){
-    # now to draw the points
-    for(i in 1:number_groups){
-      points(x=rep(x_values[i],boxplot_table$n[i]),y=response[group==factor_names[i]],pch=points,col=cols_points[i])
-    }
-  }
-  
-  else if(jitter==T){
-    for(i in 1:number_groups){
-      points(x=rep(x_values[i],boxplot_table$n[i])+rnorm(boxplot_table$n[i],0,0.02/(number_groups/2)),y=response[group==factor_names[i]],pch=points,col=cols_points[i])
-    }
-  }
-  par(bty="o",lwd=1)
-}
-
 
 # for making credible intervals
 # used in strip() above
@@ -434,13 +363,14 @@ credible_intervals<-function(x,n=100000){
 # simplest:
 # bar(list(rnorm(20,5),rnorm(15,5)),lab=c("A","B"),xlab="group",ylab="response",jitter=F)
 # with conf. intervals:
-# bar(list(rnorm(20,5),rnorm(15,5)),CI=T,lab=c("A","B"),xlab="group",ylab="response",jitter=F)
+# bar(list(rnorm(20,5),rnorm(15,5)),CI=T,lab=c("A","B"),xlab="group",ylab="response",jitter=F,bar_color=viridis(3)[1:2])
 # nicer:
 # bar(list(rnorm(20,5),rnorm(15,5)),CI=T,lab=c("A","B"),xlab="group",ylab="response")
 # with more groups
-# bar(list(rnorm(20,5),rnorm(15,5),rnorm(200,50),rnorm(50,1),rnorm(34,19)),CI=T)
+# bar(list(rnorm(20,5),rnorm(15,5),rnorm(200,50),rnorm(50,1),rnorm(34,19)),CI=T,bar_color=viridis(7)[1:5])
 # with medians plotted:
 # bar(list(rnorm(20,5),rnorm(15,5),rnorm(200,50),rnorm(50,1),rnorm(34,19)),CI=T,median=T)
+
 bar<-function(sim,lab=rep(c(),length(sim)),CI=F,SE=F,bar_color="grey80",jitter=T,point_col="#00000080",y_limits=NA,median=FALSE,...){
   par(lwd = 1,family = 'Helvetica')
   
@@ -486,7 +416,7 @@ bar<-function(sim,lab=rep(c(),length(sim)),CI=F,SE=F,bar_color="grey80",jitter=T
   if(CI==T){
     for(i in 1:length(sim)){
       # find the stardard error
-      arrows(x0=p[i],y0=t.test(sim[[i]])$conf[1],x1=p[i],y1=t.test(sim[[i]])$conf[2],col="grey50",angle=90,code=3,lwd=1,length=.1)
+      arrows(x0=p[i],y0=t.test(sim[[i]])$conf[1],x1=p[i],y1=t.test(sim[[i]])$conf[2],col="grey50",angle=90,code=3,lwd=1.2,length=0)
       #lines(rep(p[i],2),y=c(mean(sim[[i]]),mean(sim[[i]])-(se*1.96)),lwd=5,col="white")
       #lines(rep(p[i],2),y=c(mean(sim[[i]]),mean(sim[[i]])+(se*1.96)),lwd=5)
     }
@@ -496,7 +426,7 @@ bar<-function(sim,lab=rep(c(),length(sim)),CI=F,SE=F,bar_color="grey80",jitter=T
     for(i in 1:length(sim)){
       # find the stardard error
       se<-sd(sim[[i]])/sqrt(length(sim[[i]]))
-      arrows(x0=p[i],y0=mean(sim[[i]])-se,x1=p[i],y1=mean(sim[[i]])+se,col="grey50",angle=90,code=3,lwd=1,length=.1)
+      arrows(x0=p[i],y0=mean(sim[[i]])-se,x1=p[i],y1=mean(sim[[i]])+se,col="grey50",angle=90,code=3,lwd=1.2,length=0)
       #lines(rep(p[i],2),y=c(mean(sim[[i]]),mean(sim[[i]])-se),lwd=5,col="white")
       #lines(rep(p[i],2),y=c(mean(sim[[i]]),mean(sim[[i]])+se),lwd=5)
     }
@@ -536,57 +466,6 @@ line<-function(x,y,color="black",...){
 transform <- function(x,m,b){
   return((m*x)+b)
 }
-
-
-scatterOld<-function(x,y,xlab="",ylab="",line=T,sig=T,color="black",line_col="red",confidenceInterval=T,...){
-  par(lwd=2,cex=1,bg="white")
-  # error checking
-  if(length(x)!=length(y)){
-    stop("x and y lengths differ")
-  }
-  
-  # do the actual plotting
-  plot(x,y,xlab=xlab,ylab=ylab,pch=16,bty="n",col=color,...)
-  
-  p<-summary(lm(y~x))$coefficients[2,4]
-  c<-summary(lm(y~x))$coefficients[2,1]
-  
-  # draw the line of best fit
-  if(line==T){
-    if(p<=0.05){
-      line(x,y,lwd=2,color=line_col)
-    }
-    else{
-      line(x,y,lwd=2,lty=2,color=line_col)
-    }
-  }
-  
-  # add statistical significance to the plot
-  if(sig==T){
-    if(c<0){
-      print(c)
-      legend(x="bottomright",bty="n",legend=paste("p = ",round(p,3)))
-    }
-    else{
-      print(c)
-      legend(x="bottomleft",bty="n",legend=paste("p = ",round(p,3)))
-    }
-  }
-  
-  # adding confidence intervals around the regression line
-  if(confidenceInterval==T){
-    model<-lm(y~x)
-    xVals<-seq(min(x),max(x),.1)
-    conf<-predict(model,data.frame(x=xVals),interval="confidence",level=0.95)
-    lines(xVals,conf[,2],col="#00000050",lty=2)
-    lines(xVals,conf[,3],col="#00000050",lty=2)
-  }
-  
-  # reset the par values
-  par(lwd=1,cex=1,bg="white")
-}
-
-
 
 # example
 ## scatter(rnorm(50,50,10),rnorm(50,30,3))
@@ -648,7 +527,7 @@ scatter<-function(x,y,xlab="",ylab="",line=T,sig=T,color="black",line_col="red",
 ### beeStrip + mod
 ##################
 #data(iris)
-#beeStripMod(iris$Sepal.Length,iris$Species,xlab="species",ylab="sepal length",main="beeStripMod() example")
+# beeStripMod(iris$Sepal.Length,iris$Species,xlab="species",ylab="sepal length",main="beeStripMod() example")
 
 beeStripMod<-function(data,group,lab=rep(c(),length(data)),point_size=1.4,beeMethod="center",line_width=3.0,jitter=T,point_col=ifelse(is.list(data) %>% rep(20),viridis(length(data)+1)[1:length(data)],viridis(nlevels(group)+1)[1:nlevels(group)]),y_limits=c(ifelse(is.list(data),min(unlist(data)),min(data)),ifelse(is.list(data),max(unlist(data),max(data)))),mean=FALSE,sample_size=T,side=-1,red_median=F,stats=T,...){
   
@@ -714,9 +593,10 @@ beeStripMod<-function(data,group,lab=rep(c(),length(data)),point_size=1.4,beeMet
 ### beeStrip + boxplot
 ##################
 #data(iris)
-#beeStripBox(iris$Sepal.Length,iris$Species,xlab="species",ylab="sepal length",main="beeStripBox() example")
+# beeStripBox(iris$Sepal.Length,iris$Species,xlab="species",ylab="sepal length",main="beeStripBox() example")
+
 # TO DO: fix box color argument. can't get boxes to take on the right colors
-beeStripBox<-function(data,group,lab=rep(c(),length(data)),point_size=1.4,beeMethod="center",line_width=3.0,point_col=ifelse(is.list(data) %>% rep(20),viridis(length(data)+1)[1:length(data)],viridis(nlevels(group)+1)[1:nlevels(group)]),y_limits=c(ifelse(is.list(data),min(unlist(data)),min(data)),ifelse(is.list(data),max(unlist(data),max(data)))),mean=FALSE,sample_size=T,side=-1,red_median=F,stats=T,box_thickness = 0.2,box_color=FALSE,...){
+beeStripBox<-function(data,group,lab=rep(c(),length(data)),point_size=1.4,beeMethod="center",line_width=3.0,point_col=ifelse(is.list(data) %>% rep(20),viridis(length(data)+1)[1:length(data)],viridis(nlevels(group)+1)[1:nlevels(group)]),y_limits=c(ifelse(is.list(data),min(unlist(data)),min(data)),ifelse(is.list(data),max(unlist(data),max(data)))),mean=FALSE,sample_size=T,side=-1,stats=T,box_thickness = 0.2,box_color=FALSE,...){
   
   # if response is missing, assume data is a list
   if(missing(group)){
@@ -733,7 +613,7 @@ beeStripBox<-function(data,group,lab=rep(c(),length(data)),point_size=1.4,beeMet
     boxplot_table<-boxplot(data,plot=F)
     # create the plot
     beeswarm(data,method=beeMethod,priority="density",pch=16,col=point_col,cex=point_size,side = side,bty='l',labels=lab,...)
-    boxplot(data, main = "", axes = FALSE, at = 1:number_groups+0.2, xlab=" ", ylab=" ", border = ifelse(box_color==T,point_col,"black"), add=TRUE ,boxwex = box_thickness,pars = list(medlty = 1, whisklty = c(1, 1), medcex = 0.7, outcex = 0, staplelty = "blank"))
+    boxplot(data, main = "", axes = FALSE,border = point_col,at = 1:number_groups+0.2, xlab=" ", ylab=" ", border = ifelse(box_color==T,point_col,"black"), add=TRUE ,boxwex = box_thickness,pars = list(medlty = 1, whisklty = c(1, 1), medcex = 0.7, outcex = 0, staplelty = "blank"))
   }
   
   else{
@@ -742,8 +622,8 @@ beeStripBox<-function(data,group,lab=rep(c(),length(data)),point_size=1.4,beeMet
     point_col = point_col[1:number_groups]
     # create the plot
     beeswarm(data~group,method=beeMethod,priority="density",pch=16,col=point_col,cex=point_size,side = side,bty='l',labels=lab,...)
-    boxplot(data~group, add=TRUE, main = "", at = 1:number_groups+0.2, axes = FALSE, xlab=" ", ylab=" ",border = ifelse(box_color==T,point_col,"black"), boxwex = box_thickness, pars = list(medlty = 1, whisklty = c(1, 1), medcex = 0.7, outcex = 0, staplelty = "blank"))
-    
+    boxplot(data~group, add=TRUE, main = "",border = point_col, at = 1:number_groups+0.2, axes = FALSE, xlab=" ", ylab=" ", boxwex = box_thickness, pars = list(medlty = 1, whisklty = c(1, 1), medcex = 0.7, outcex = 0, staplelty = "blank"))
+
     if(stats==T){
       print(TukeyHSD(aov(data~group)))
       x = summary(aov(data~group))[[1]][["Pr(>F)"]][1] %>% round(4)
@@ -764,9 +644,8 @@ beeStripBox<-function(data,group,lab=rep(c(),length(data)),point_size=1.4,beeMet
   # for plotting sample size below each group
   if(sample_size==TRUE){
     for(i in 1:number_groups){
-      text(x=x_values[i]+(scale*number_groups),y=min(data[[i]])*0.99,paste("n = ",boxplot_table$n,sep=""),col="grey20")
+      text(x=x_values[i]+(scale*number_groups),y=min(data)*0.98,paste("n = ",boxplot_table$n,sep=""),col="grey20")
     }
-    
   }
 }
 
@@ -808,8 +687,12 @@ mod<-function(response,group,lab=levels(group),...){
 }
 
 # histogram
-histogram=function(x,color="grey50",bor="grey50",...){
+# histogram(rnorm(100))
+histogram=function(x,color="grey50",bor="grey50",rug = TRUE,...){
   hist(x,col=color,border=bor,lwd=2,cex.lab=1.2,...)
+  if(rug == TRUE){
+    rug(x, side = 1)
+  }
 }
 
 
