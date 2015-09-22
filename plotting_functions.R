@@ -61,10 +61,11 @@ cols<-c(ruby,mint,golden,slate,orange,sky)
 ## add the IQR: simple(x,line_col="black",point_col=c(ruby,mint,slate),ylab="measurement",xlab="group",lab=c("A","B","C"),rug=T,IQR=T)
 # simple(list(rnorm(50,50,5),rnorm(30,40,6),rnorm(10,60,2),rnorm(60,50,10),rnorm(30,39,4)),point_col=wes_palette(5, name = "Zissou"),line_color="black",median=T,main="simple() dressed up")
 ## simple(list(rnorm(24,10,2),rchisq(20,5),rexp(40,1/5),runif(40,5,15)),lab=c("normal","chi-squared","exponetial","uniform"),point_col=c(ruby,mint,slate,"goldenrod"),line_color="black",median=T)
+# simple(list(rnorm(50,50,5),rnorm(30,40,6),rnorm(10,60,2),rnorm(60,50,10),rnorm(30,39,4)),point_col=wes_palette(5, name = "Zissou"),line_color="black",median=T,main="simple()",xlab="group",ylab="value",lab=c("A","B","C","D","E"))
 
 # to do: replace rug place with marginal density plots of each group?
 
-simple<-function(data,grouping=NULL,lab=rep(c(),length(data)),point_size=1.2,line_color="red",line_width=3.0,jitter=T,point_col=viridis(length(data)+2)[1:length(data)],y_limits=c(min(unlist(data),na.rm=T),max(unlist(data),na.rm=T)),median=FALSE,rug=TRUE,sample_size=T,IQR=F,...){
+simple<-function(data,grouping=NULL,lab=NA,point_size=1.2,line_color="red",line_width=3.0,jitter=T,point_col=viridis(length(data)+2)[1:length(data)],y_limits=c(min(unlist(data),na.rm=T),max(unlist(data),na.rm=T)),median=FALSE,rug=TRUE,sample_size=T,IQR=F,...){
   # can't figure out how to make inputting the data more flexible (e.g. with a formula)
   # data_name <- deparse(substitute(data))
 #   
@@ -96,7 +97,6 @@ simple<-function(data,grouping=NULL,lab=rep(c(),length(data)),point_size=1.2,lin
   if(is.list(data)==FALSE){
     stop("however you input the data, try some other way")
   }
-  
   number_groups<-length(data)
   # to get nice x values for plotting, we'll use those generate by barplot()
   x_values<-barplot(rep(1,number_groups),plot=F)
@@ -239,7 +239,7 @@ beeStrip<-function(data,lab=rep(c(),length(data)),point_size=1.4,beeMethod="cent
 # strip(list(rnorm(50,5),rnorm(20,10)))
 # strip(list(rpois(50,5),rpois(20,3),rnorm(100,7)),type="ci",lab=c("a","b","c"),xlab="group",ylab="response")
 # lots of groups:
-# strip(list(rpois(50,5),rpois(20,3),rnorm(100,7),rnorm(45,2),rnorm(90,9)),type="ci",lab=c("a","b","c","d","e"),xlab="group",ylab="response",mean_col="black")
+# strip(list(rpois(50,5),rpois(20,3),rnorm(100,7),rnorm(45,2),rnorm(90,9)),type="ci",lab=c("a","b","c","d","e"),xlab="group",ylab="value",mean_col="black",col=viridis(7)[1:5] %>% addAlpha(0.5))
 
 strip<-function(data,lab=rep(c(),length(data)),type="se",jitter=T,points=16,xlab="",ymin="determine",ymax="determine",point_size=1.2,mean_col = "red",cols = viridis(length(data)+2)[1:length(data)],...){
   par(bty="l")
@@ -370,8 +370,9 @@ credible_intervals<-function(x,n=100000){
 # bar(list(rnorm(20,5),rnorm(15,5),rnorm(200,50),rnorm(50,1),rnorm(34,19)),CI=T,bar_color=viridis(7)[1:5])
 # with medians plotted:
 # bar(list(rnorm(20,5),rnorm(15,5),rnorm(200,50),rnorm(50,1),rnorm(34,19)),CI=T,median=T)
+# bar(list(rnorm(20,5),rnorm(15,5)),CI=T,lab=c("A","B"),xlab="group",ylab="response",jitter=T,bar_color=viridis(10)[c(3,7)],point_size=1.5)
 
-bar<-function(sim,lab=rep(c(),length(sim)),CI=F,SE=F,bar_color="grey80",jitter=T,point_col="#00000080",y_limits=NA,median=FALSE,...){
+bar<-function(sim,lab=rep(c(),length(sim)),CI=F,SE=F,bar_color="grey80",jitter=T,point_col="#00000080",y_limits=NA,median=FALSE,point_size=1.0,sample_size=TRUE,...){
   par(lwd = 1,family = 'Helvetica')
   
   if(is.list(sim)==F){
@@ -407,6 +408,10 @@ bar<-function(sim,lab=rep(c(),length(sim)),CI=F,SE=F,bar_color="grey80",jitter=T
   axis(1,at=p,lwd=1,cex=1.5,labels=lab,tick=F)
   axis(2,cex=1.5,lwd=1)
   
+  if(sample_size==TRUE){
+    text(x=p,y=0, pos=3, labels=paste("n = ",lapply(sim, length) ) )
+  }
+  
   if(SE==T & CI ==T){
     stop("can't plot both a conf. interval and a standard error. choose only one.")
   }
@@ -416,7 +421,7 @@ bar<-function(sim,lab=rep(c(),length(sim)),CI=F,SE=F,bar_color="grey80",jitter=T
   if(CI==T){
     for(i in 1:length(sim)){
       # find the stardard error
-      arrows(x0=p[i],y0=t.test(sim[[i]])$conf[1],x1=p[i],y1=t.test(sim[[i]])$conf[2],col="grey50",angle=90,code=3,lwd=1.2,length=0)
+      arrows(x0=p[i],y0=t.test(sim[[i]])$conf[1],x1=p[i],y1=t.test(sim[[i]])$conf[2],col="grey50",angle=90,code=3,lwd=1.5,length=0)
       #lines(rep(p[i],2),y=c(mean(sim[[i]]),mean(sim[[i]])-(se*1.96)),lwd=5,col="white")
       #lines(rep(p[i],2),y=c(mean(sim[[i]]),mean(sim[[i]])+(se*1.96)),lwd=5)
     }
@@ -426,7 +431,7 @@ bar<-function(sim,lab=rep(c(),length(sim)),CI=F,SE=F,bar_color="grey80",jitter=T
     for(i in 1:length(sim)){
       # find the stardard error
       se<-sd(sim[[i]])/sqrt(length(sim[[i]]))
-      arrows(x0=p[i],y0=mean(sim[[i]])-se,x1=p[i],y1=mean(sim[[i]])+se,col="grey50",angle=90,code=3,lwd=1.2,length=0)
+      arrows(x0=p[i],y0=mean(sim[[i]])-se,x1=p[i],y1=mean(sim[[i]])+se,col="grey50",angle=90,code=3,lwd=1.5,length=0)
       #lines(rep(p[i],2),y=c(mean(sim[[i]]),mean(sim[[i]])-se),lwd=5,col="white")
       #lines(rep(p[i],2),y=c(mean(sim[[i]]),mean(sim[[i]])+se),lwd=5)
     }
@@ -435,7 +440,7 @@ bar<-function(sim,lab=rep(c(),length(sim)),CI=F,SE=F,bar_color="grey80",jitter=T
   if(jitter==T){
     x_vals = p + 0.2
     for(i in 1:length(sim)){
-      points(x=rep(x_vals[i],length(sim[[i]]))+rnorm(length(sim[[i]]),0,0.05),y=sim[[i]],pch=16,col=point_col)
+      points(x=rep(x_vals[i],length(sim[[i]]))+rnorm(length(sim[[i]]),0,0.05),y=sim[[i]],pch=16,col=point_col,cex=point_size)
     }
   }
   
