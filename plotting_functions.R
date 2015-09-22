@@ -421,7 +421,7 @@ bar<-function(sim,lab=rep(c(),length(sim)),CI=F,SE=F,bar_color="grey80",jitter=T
   if(CI==T){
     for(i in 1:length(sim)){
       # find the stardard error
-      arrows(x0=p[i],y0=t.test(sim[[i]])$conf[1],x1=p[i],y1=t.test(sim[[i]])$conf[2],col="grey50",angle=90,code=3,lwd=1.5,length=0)
+      arrows(x0=p[i],y0=t.test(sim[[i]])$conf[1],x1=p[i],y1=t.test(sim[[i]])$conf[2],col="grey50",angle=90,code=3,lwd=2,length=0)
       #lines(rep(p[i],2),y=c(mean(sim[[i]]),mean(sim[[i]])-(se*1.96)),lwd=5,col="white")
       #lines(rep(p[i],2),y=c(mean(sim[[i]]),mean(sim[[i]])+(se*1.96)),lwd=5)
     }
@@ -431,7 +431,7 @@ bar<-function(sim,lab=rep(c(),length(sim)),CI=F,SE=F,bar_color="grey80",jitter=T
     for(i in 1:length(sim)){
       # find the stardard error
       se<-sd(sim[[i]])/sqrt(length(sim[[i]]))
-      arrows(x0=p[i],y0=mean(sim[[i]])-se,x1=p[i],y1=mean(sim[[i]])+se,col="grey50",angle=90,code=3,lwd=1.5,length=0)
+      arrows(x0=p[i],y0=mean(sim[[i]])-se,x1=p[i],y1=mean(sim[[i]])+se,col="grey50",angle=90,code=3,lwd=2,length=0)
       #lines(rep(p[i],2),y=c(mean(sim[[i]]),mean(sim[[i]])-se),lwd=5,col="white")
       #lines(rep(p[i],2),y=c(mean(sim[[i]]),mean(sim[[i]])+se),lwd=5)
     }
