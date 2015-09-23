@@ -818,6 +818,23 @@ monte_paired<-function(data,n=9999,table=TRUE,diff_col=3,one_sided=F){
   }
 }
 
+# calculate pooled SD from two sample (x and y) as defined by Cohen 1988
+# pooled_sd(c(21,30,29),c(42,41,40,39))
+pooled_sd <- function(x,y){
+  num <- ((length(x)-1)*sd(x)) + ((length(y)-1)*sd(y))
+  denom <- length(x) + length(y) - 2
+  return(sqrt(num/denom))
+}
+
+
+# calculate cohen's d, a measure of effect size
+# cohens_d(rnorm(50),rnorm(50))
+
+cohens_d <- function(x,y){
+  d<- ifelse(mean(x) > mean(y),(mean(x)-mean(y))/pooled_sd(x,y), (mean(y)-mean(x))/pooled_sd(x,y))
+  return(d)
+}
+
 ## Add an alpha value to a colour
 # from http://www.magesblog.com/2013/04/how-to-change-alpha-value-of-colours-in.html
 addAlpha <- function(col, alpha=1){
