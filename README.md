@@ -11,7 +11,10 @@ My philosophy about graphics:
 * the test used to assess statistical significance should be clear, as should the p-value
 * color should be used carefully. The default colors for most of these plots come from the [viridis](https://bids.github.io/colormap/) colormap, which is perceptually uniform, works printed in black and white, is accessible to people with the most common forms of colorblindness, and looks good.
 
+
 Some of these things are not implemented (yet) in the graphics below
+
+
 ------------
 
 ##Make pretty graphs like this:
