@@ -1,26 +1,18 @@
 # graphics
 contains code to create graphics I like, plus a couple  monte carlo functions
 
+-------------
+
+My philosophy about graphics: 
+* every part of the graph should have a clear function
+* show the data and some summary of the data (similar to how a scatter plot shows the data--the individual data points--and a summary--usually a regression line or spline)
+* sample sizes should be clearly labled
+* some measure of effect size should be apparent
+* the test used to assess statistical significance should be clear, as should the p-value
+* color should be used carefully. The default colors for most of these plots come from the [viridis](https://bids.github.io/colormap/) colormap, which is perceptually uniform, works printed in black and white, is accessible to people with the most common forms of colorblindness, and looks good.
+
+Some of these things are not implemented (yet) in the graphics below
 ------------
-
-# Plotting functions:
-strip -- show the average as a point with option SE / CI, shows the data  
-bar -- barplot, still needs some work  
-scatter -- scatterplot  
-mod -- modified box plot  
-histogram -- self-explanatory  
-simple -- draws a line for the mean of each group and plots the data points   
-beeStrip -- like simple, but plotted using the beeswarm package so no alpha is needed  
-addAlpha -- add transparancy to any color. pass the color and alpha value in [0,1]   
-
-
-# Stats functions:
-monte_unpaired -- monte carlo permutation test, two unpaired samples  
-monte_paired -- monte carlo permutation test, two paired samples
-
-source-ing the code will download any needed packages not installed on your machine
-
-----------
 
 ##Make pretty graphs like this:
 
