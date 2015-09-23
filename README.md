@@ -33,7 +33,7 @@ Plot the data for each group as a histogram; include modified boxplot from Tufte
 
 ![beeStripMod](https://github.com/lukereding/graphics/raw/master/examplePlots/beeStripMod.png)
 
-Plot the data jittered, draw line at the mean
+Plot the data jittered, draw line at the mean. Note that you could use the addAlpha function included in the script to add transparency to each of the colors pretty easily, e.g. `viridis(3) %>% addAlpha(0.6)`
 
 `simple(list(iris %>% filter(Species=="setosa") %>% .$Sepal.Length, iris %>% filter(Species=="versicolor") %>% .$Sepal.Length, iris %>% filter(Species=="virginica") %>% .$Sepal.Length),lab=c("setosa","versicolor","virginica"),ylab="sepal length",main="simple()",xlab="species")`
 ![simple](https://github.com/lukereding/graphics/raw/master/examplePlots/simple.png)
