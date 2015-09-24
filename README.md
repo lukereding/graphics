@@ -1,14 +1,15 @@
 # graphics
-contains code to create graphics I like, plus a couple  monte carlo functions
+contains code to create graphics I like
 
 -------------
 
-My philosophy about graphics: 
-* every part of the graph should have a clear function
-* show the data and some summary of the data (similar to how a scatter plot shows the data--the individual data points--and a summary--usually a regression line or spline)
+These plots are work for my purposes and are designed with the following philosophy in mind:
+* every part of the graph should have a clear purpose
+* the data and some summary of the data should be shown (similar to how a scatter plot shows the data--the individual data points--and a summary--usually a regression line or spline)
 * sample sizes should be clearly labled
 * some measure of effect size should be apparent
 * the test used to assess statistical significance should be clear, as should the p-value
+* don't extrapolate
 * color should be used carefully. The default colors for most of these plots come from the [viridis](https://bids.github.io/colormap/) colormap, which is perceptually uniform, works printed in black and white, is accessible to people with the most common forms of colorblindness, and looks good.
 
 
