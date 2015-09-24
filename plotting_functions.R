@@ -274,23 +274,18 @@ strip<-function(data,lab=rep(c(),length(data)),type="se",jitter=T,points=16,xlab
     maximum_value=ymax*1.05
     minimum_value=ymin*1.05
   }
-
-  
-  plot(c(0,1),c(minimum_value,maximum_value),type="n",xaxt="n",xlab=xlab,...)
-  
-  if(number_groups == 1){
-    x_values = 0.5
-    offset= 0.15
-  }
-  else{
-    x_values<-seq(0.2,0.8,length.out=number_groups)
-    # offset is the distance between the data points and their means
-    offset <- 0.2 / number_groups
-  }
   
   # use lapply to extract the means
   means<-lapply(data,mean)
   
+  # use barplot in base R to get good x axis values
+  x_values <- barplot(unlist(means)) %>% as.vector
+  
+  
+  plot(c(0,x_values[number_groups]+0.2),c(minimum_value,maximum_value),type="n",xaxt="n",xlab=xlab,...)
+  
+  
+  offset<- 0.15
   
   if(type=="se"){
     std_dev<-lapply(data,sd)
@@ -327,13 +322,13 @@ strip<-function(data,lab=rep(c(),length(data)),type="se",jitter=T,points=16,xlab
   if(jitter==F){
     # now to draw the points
     for(i in 1:number_groups){
-      points(x=rep(x_values[i],length(data[[i]])),y=data[[i]],pch=points,col=cols[i])
+      points(x=rep(x_values[i]-offset,length(data[[i]])),y=data[[i]],pch=points,col=cols[i])
     }
   }
   
   else if(jitter==T){
     for(i in 1:number_groups){
-      points(x=rep(x_values[i],length(data[[i]]))+rnorm(length(data[[i]]),0,0.02/(number_groups/2)),y=data[[i]],pch=points,col=cols[i],cex=point_size)
+      points(x=rep(x_values[i]-offset,length(data[[i]])) %>% jitter(amount=0.1),y=data[[i]],pch=points,col=cols[i],cex=point_size)
     }
   }
   par(bty="o",lwd=1)
