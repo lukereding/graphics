@@ -258,22 +258,12 @@ strip<-function(data,lab=rep(c(),length(data)),type="se",jitter=T,points=16,xlab
   
   
   if(ymin=="determine"&ymax=="determine"){
-    maximum_value = -1000
-    minimum_value = 1000
-    for(i in 1:length(data)){
-      if(max(data[[i]]>maximum_value)){
-        maximum_value <- max(data[[i]])
-      }
-      if(min(data[[i]]<minimum_value)){
-        minimum_value <- min(data[[i]])
-      }
-    }
+    ymin <- min(unlist(data))
+    ymax <- max(unlist(data))
   }
   
-  else{
-    maximum_value=ymax*1.05
-    minimum_value=ymin*1.05
-  }
+  maximum_value=ymax*1.05
+  minimum_value=ymin*1.05
   
   # use lapply to extract the means
   means<-lapply(data,mean)
