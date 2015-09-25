@@ -3,7 +3,7 @@ contains code to create graphics I like
 
 -------------
 
-These plots are work for my purposes and are designed with the following philosophy in mind:
+These plots  work for my purposes and are designed with the following philosophy in mind:
 * every part of the graph should have a clear purpose
 * the data and some summary of the data should be shown (similar to how a scatter plot shows the data--the individual data points--and a summary--usually a regression line or spline)
 * sample sizes should be clearly labled
