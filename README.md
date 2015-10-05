@@ -3,14 +3,14 @@ contains code to create graphics I like
 
 -------------
 
-These plots are work for my purposes and are designed with the following philosophy in mind:
+These plots  work for my purposes and are designed with the following philosophy in mind:
 * every part of the graph should have a clear purpose
-* the data and some summary of the data should be shown (similar to how a scatter plot shows the data--the individual data points--and a summary--usually a regression line or spline)
-* sample sizes should be clearly labled
-* some measure of effect size should be apparent
-* the test used to assess statistical significance should be clear, as should the p-value
+* show the data, some summary of the data or parameter estimate of interest, and some measure of variability about that estimate
+* clearly label sample sizes
+* state some measure of effect size
+* state the the test used to assess statistical significance and the resulting p-value
 * don't extrapolate
-* color should be used carefully. The default colors for most of these plots come from the [viridis](https://bids.github.io/colormap/) colormap, which is perceptually uniform, works printed in black and white, is accessible to people with the most common forms of colorblindness, and looks good.
+* use color thoughtfully. The default colors for most of these plots come from the [viridis](https://bids.github.io/colormap/) colormap, which is perceptually uniform, works printed in black and white, is accessible to people with the most common forms of colorblindness, and looks good.
 
 
 Some of these things are not implemented (yet) in the graphics below

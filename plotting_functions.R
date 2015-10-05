@@ -115,7 +115,7 @@ simple<-function(data,grouping=NULL,lab=NA,point_size=1.2,line_color="red",line_
   
   # plot the mean as a line
   for(i in 1:length(data)){
-    lines(x=c(x_values[i]-(0.06*xRange),x_values[i]+(0.06*xRange)),y=c(rep(mean(data[[i]],na.rm=T),2)),col=line_color,lwd=line_width)
+    lines(x=c(x_values[i]-0.2,x_values[i]+0.2),y=c(rep(mean(data[[i]],na.rm=T),2)),col=line_color,lwd=line_width)
   }
   
   # to plot the IQR:
@@ -137,7 +137,7 @@ simple<-function(data,grouping=NULL,lab=NA,point_size=1.2,line_color="red",line_
   # draw data points 
   if(jitter==T){
     for(i in 1:number_groups){
-      points(x=rep(x_values[i],length(data[[i]]))+rnorm(length(data[[i]]),0,xRange*0.02),y=data[[i]],pch=16,col=point_col[i],cex=point_size)
+      points(x=rep(x_values[i],length(data[[i]])) %>% jitter(0.7),y=data[[i]],pch=16,col=point_col[i],cex=point_size)
     }
   }
   else{
