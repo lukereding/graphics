@@ -463,7 +463,8 @@ transform <- function(x,m,b){
 # example
 ## scatter(rnorm(50,50,10),rnorm(50,30,3))
 
-scatter<-function(x,y,xlab="",ylab="",line=T,sig=T,color="black",line_col="red",confidenceInterval=T,plottingCharacter=16,rug = T,...){
+scatter<-function(x,y,xlab="",ylab="",line=T,stats=TRUE,color="black",line_col="red",confidenceInterval=T,plottingCharacter=16,rug = T,...){
+  op <- par(no.readonly = TRUE)
   par(lwd=1,cex=1,bg="white")
   
   # error checking
@@ -474,12 +475,14 @@ scatter<-function(x,y,xlab="",ylab="",line=T,sig=T,color="black",line_col="red",
   # do the actual plotting
   plot(x,y,xlab=xlab,ylab=ylab,pch=plottingCharacter,bty="l",col=color,...)
   
-  p<-summary(lm(y~x))$coefficients[2,4]
+  p.value<-summary(lm(y~x))$coefficients[2,4]
   c<-summary(lm(y~x))$coefficients[2,1]
+  r_squared <- summary(lm(y~x))$r.squared %>% round(3)
+  sample_size <- length(x)
   
   # draw the line of best fit
   if(line==T){
-    if(p<=0.05){
+    if(p.value<=0.05){
       line(x,y,lwd=2,color=line_col)
     }
     else{
@@ -502,18 +505,23 @@ scatter<-function(x,y,xlab="",ylab="",line=T,sig=T,color="black",line_col="red",
     rug(y,side=2,col="#00000070",lwd=2)
   }
   
-  # add statistical significance to the plot
-  if(sig==T){
+  # add important stats to the plot
+  if(stats==T){
+    rp = vector('expression',3)
+    rp[1] = substitute(expression(r^2 == r_squared),list(r_squared = format(r_squared,dig=3)))[2]
+    rp[3] = substitute(expression(p == p.value), list(p.value = format(p.value, digits = 2)))[2]
+    rp[2] = substitute(expression(n == sample_size), list(sample_size = format(sample_size, digits = 2)))[2]
+    
     if(c>0){
-      legend(x="bottomright",bty="n",legend=paste("p = ",round(p,3)))
+      legend(x="bottomright",bty="n",legend=rp, y.intersp=1.2,cex=0.9,inset = 0.01)
     }
     else{
-      legend(x="bottomleft",bty="n",legend=paste("p = ",round(p,3)))
+      legend(x="bottomleft",bty="n",legend=rp,y.intersp=0.8,inset = 0.05)
     }
   }
   
   # reset the par values
-  par(lwd=1,cex=1,bg="white")
+  on.exit(par(op))
 }
 
 ##############

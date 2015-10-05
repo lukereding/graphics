@@ -65,7 +65,9 @@ Modified box plot alone
 
 ### quantitative x quantitative data
 
-`scatter(iris %>% filter(Species=="setosa") %>% .$Petal.Length %>% jitter(.25), iris %>% filter(Species=="setosa") %>% .$Petal.Width %>% jitter(0.25),xlab="petal length",ylab="petal width",color="#00000050",main="scatter() example")`    
+Note here that the regression line does not extend beyond the range of the data; p-value, sample size, and r squared values are given clearly; and there is some measure of uncertainty about the slope (the confidence bands).
+
+`scatter(trees[,1],trees[,2],xlab="tree girth (in.)",ylab="tree height (ft.)",main="scatter() example")`    
 
 ![scatter](https://github.com/lukereding/graphics/raw/master/examplePlots/scatter.png)
 
