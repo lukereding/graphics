@@ -858,7 +858,7 @@ addAlpha <- function(col, alpha=1){
 }
 
 convert_to_greyscale <- function(col){
-  apply(sapply(col, col2rgb)/255, 2, 
-        function(x) 
-          rgb(x[1]*0.2126, x[2]*0.7152, x[3]*0.0722))
+  avg <- mean(col2rgb(col)/255)
+  grey = rgb(red=avg,green=avg,blue=avg,alpha=1)
+  return(grey)
 }
