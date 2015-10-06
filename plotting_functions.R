@@ -268,7 +268,7 @@ strip<-function(data,lab=rep(c(),length(data)),type="se",jitter=T,points=16,xlab
   }
   
   maximum_value=ymax*1.05
-  minimum_value=ymin*1.05
+  minimum_value=ymin*0.95
   
   # use lapply to extract the means
   means<-lapply(data,mean)
@@ -363,7 +363,7 @@ credible_intervals<-function(x,n=100000){
 # with more groups
 # bar(list(rnorm(20,5),rnorm(15,5),rnorm(200,50),rnorm(50,1),rnorm(34,19)),CI=T,bar_color=viridis(7)[1:5])
 # with medians plotted:
-# bar(list(rnorm(20,5),rnorm(15,5),rnorm(200,50),rnorm(50,1),rnorm(34,19)),CI=T,median=T)
+# bar(list(iris %>% filter(Species=="setosa") %>% .$Sepal.Length, iris %>% filter(Species=="versicolor") %>% .$Sepal.Length, iris %>% filter(Species=="virginica") %>% .$Sepal.Length),median=T,CI=T,lab=c("setosa","versicolor","virginica"),ylab="sepal length",main="bar() example")
 # bar(list(rnorm(20,5),rnorm(15,5)),CI=T,lab=c("A","B"),xlab="group",ylab="response",jitter=T,bar_color=viridis(10)[c(3,7)],point_size=1.5)
 
 bar<-function(sim,lab=rep(c(),length(sim)),CI=F,SE=F,bar_color="grey80",jitter=T,point_col="#00000080",y_limits=NA,median=FALSE,point_size=1.0,sample_size=TRUE,...){
@@ -468,7 +468,7 @@ transform <- function(x,m,b){
 
 # example
 ## scatter(rnorm(50,50,10),rnorm(50,30,3))
-
+## scatter(trees[,1],trees[,2],xlab="tree girth (in.)",ylab="tree height (ft.)",main="scatter() example")
 scatter<-function(x,y,xlab="",ylab="",line=T,stats=TRUE,color="black",line_col="red",confidenceInterval=T,plottingCharacter=16,rug = T,...){
   op <- par(no.readonly = TRUE)
   par(lwd=1,cex=1,bg="white",xpd=FALSE)
