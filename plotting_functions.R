@@ -103,7 +103,10 @@ simple<-function(data,grouping=NULL,lab=NA,point_size=1.2,line_color="red",line_
   x_values<-barplot(rep(1,number_groups),plot=F)
   
   # create the plot
-  plot(c(x_values[1]*0.4,x_values[length(x_values)]*1.2),y_limits,type="n",xaxt="n",bty="l",...)
+  plot(c(x_values[1]*0.4,x_values[length(x_values)]*1.2),y_limits,type="n",xaxt="n",yaxt="n",bty="l",...)
+  
+  # create y axis with the numbers the correct direction
+  axis(2,las=2)
   
   # find range of x:
   if(length(data)==1){
@@ -184,7 +187,9 @@ beeStrip<-function(data,lab=rep(c(),length(data)),point_size=1.4,beeMethod="cent
   number_groups<-length(data)
   
   # create the plot
-  beeswarm(data,method=beeMethod,priority="density",pch=16,col=point_col,cex=point_size,side = side,bty='l',labels=lab,...)
+  beeswarm(data,method=beeMethod,priority="density",pch=16,col=point_col,cex=point_size,side = side,bty='l',yaxt="n",labels=lab,...)
+  # create y axis with the numbers the correct direction
+  axis(2,las=2)
   
   x_values = 1:number_groups
   
@@ -272,8 +277,9 @@ strip<-function(data,lab=rep(c(),length(data)),type="se",jitter=T,points=16,xlab
   x_values <- barplot(unlist(means)) %>% as.vector
   
   
-  plot(c(0,x_values[number_groups]+0.2),c(minimum_value,maximum_value),type="n",xaxt="n",xlab=xlab,...)
-  
+  plot(c(0,x_values[number_groups]+0.2),c(minimum_value,maximum_value),type="n",xaxt="n",yaxt="n",xlab=xlab,...)
+  # create y axis with the numbers the correct direction
+  axis(2,las=2)
   
   offset<- 0.15
   
@@ -394,7 +400,7 @@ bar<-function(sim,lab=rep(c(),length(sim)),CI=F,SE=F,bar_color="grey80",jitter=T
   }
   #(p<-barplot(means,bty="l",space=0.4,ylim=ifelse(y_limits==NA,c(floor(min_value),ceiling(max_value)+(0.1*max_value)),y_limits),axes=F,col=bar_color,border=NA,...))
   axis(1,at=p,lwd=1,cex=1.5,labels=lab,tick=F)
-  axis(2,cex=1.5,lwd=1)
+  axis(2,cex=1.5,lwd=1,las=2)
   
   if(sample_size==TRUE){
     text(x=p,y=0, pos=3, labels=paste("n = ",lapply(sim, length) ) )
@@ -465,7 +471,7 @@ transform <- function(x,m,b){
 
 scatter<-function(x,y,xlab="",ylab="",line=T,stats=TRUE,color="black",line_col="red",confidenceInterval=T,plottingCharacter=16,rug = T,...){
   op <- par(no.readonly = TRUE)
-  par(lwd=1,cex=1,bg="white")
+  par(lwd=1,cex=1,bg="white",xpd=FALSE)
   
   # error checking
   if(length(x)!=length(y)){
@@ -473,7 +479,8 @@ scatter<-function(x,y,xlab="",ylab="",line=T,stats=TRUE,color="black",line_col="
   }
   
   # do the actual plotting
-  plot(x,y,xlab=xlab,ylab=ylab,pch=plottingCharacter,bty="l",col=color,...)
+  plot(x,y,xlab=xlab,ylab=ylab,pch=plottingCharacter,yaxt='n',bty="l",col=color,cex.lab=1.2,...)
+  axis(2, las=2)
   
   p.value<-summary(lm(y~x))$coefficients[2,4]
   c<-summary(lm(y~x))$coefficients[2,1]
@@ -545,14 +552,18 @@ beeStripMod<-function(data,group,lab=rep(c(),length(data)),point_size=1.4,beeMet
     # get statistics you need to plot
     boxplot_table<-boxplot(data,plot=F)
     # create the plot
-    beeswarm(data,method=beeMethod,priority="density",pch=16,col=point_col,cex=point_size,side = side,bty='l',labels=lab,...)
+    beeswarm(data,method=beeMethod,priority="density",pch=16,col=point_col,cex=point_size,side = side,bty='l',yaxt="n",labels=lab,...)
+    # create y axis with the numbers the correct direction
+    axis(2,las=2)
   }
   
   else{
     number_groups<-nlevels(group)
     boxplot_table<-boxplot(data~group,plot=F)
     # create the plot
-    beeswarm(data~group,method=beeMethod,priority="density",pch=16,col=point_col,cex=point_size,side = side,bty='l',labels=lab,...)
+    beeswarm(data~group,method=beeMethod,priority="density",pch=16,col=point_col,cex=point_size,side = side,bty='l',yaxt="n",labels=lab,...)
+    # create y axis with the numbers the correct direction
+    axis(2,las=2)
     
     if(stats==T){
       print(TukeyHSD(aov(data~group)))
@@ -613,7 +624,9 @@ beeStripBox<-function(data,group,lab=rep(c(),length(data)),point_size=1.4,beeMet
     # get statistics you need to plot
     boxplot_table<-boxplot(data,plot=F)
     # create the plot
-    beeswarm(data,method=beeMethod,priority="density",pch=16,col=point_col,cex=point_size,side = side,bty='l',labels=lab,...)
+    beeswarm(data,method=beeMethod,priority="density",pch=16,col=point_col,cex=point_size,side = side,bty='l',yaxt="n",labels=lab,...)
+    # create y axis with the numbers the correct direction
+    axis(2,las=2)
     boxplot(data, main = "", axes = FALSE,border = point_col,at = 1:number_groups+0.2, xlab=" ", ylab=" ", border = ifelse(box_color==T,point_col,"black"), add=TRUE ,boxwex = box_thickness,pars = list(medlty = 1, whisklty = c(1, 1), medcex = 0.7, outcex = 0, staplelty = "blank"))
   }
   
@@ -622,7 +635,9 @@ beeStripBox<-function(data,group,lab=rep(c(),length(data)),point_size=1.4,beeMet
     boxplot_table<-boxplot(data~group,plot=F)
     point_col = point_col[1:number_groups]
     # create the plot
-    beeswarm(data~group,method=beeMethod,priority="density",pch=16,col=point_col,cex=point_size,side = side,bty='l',labels=lab,...)
+    beeswarm(data~group,method=beeMethod,priority="density",pch=16,yaxt="n",col=point_col,cex=point_size,side = side,bty='l',labels=lab,...)
+    # create y axis with the numbers the correct direction
+    axis(2,las=2)
     boxplot(data~group, add=TRUE, main = "",border = point_col, at = 1:number_groups+0.2, axes = FALSE, xlab=" ", ylab=" ", boxwex = box_thickness, pars = list(medlty = 1, whisklty = c(1, 1), medcex = 0.7, outcex = 0, staplelty = "blank"))
 
     if(stats==T){
@@ -671,7 +686,9 @@ mod<-function(response,group,lab=levels(group),...){
   boxplot_table<-boxplot(response~group,plot=F)
   
   # create the plot
-  plot(c(0,1),c(min(response),max(response)),type="n",xaxt="n",...)
+  plot(c(0,1),c(min(response),max(response)),type="n",xaxt="n",yaxt="n",...)
+  # create y axis with the numbers the correct direction
+  axis(2,las=2)
   x_values<-seq(0.7,0.3,length.out=number_groups)
   
   # plot the median
@@ -690,7 +707,9 @@ mod<-function(response,group,lab=levels(group),...){
 # histogram
 # histogram(rnorm(100))
 histogram=function(x,color="grey50",bor="grey50",rug = TRUE,...){
-  hist(x,col=color,border=bor,lwd=2,cex.lab=1.2,...)
+  hist(x,col=color,border=bor,lwd=2,cex.lab=1.2,yaxt="n",...)
+  # create y axis with the numbers the correct direction
+  axis(2,las=2)
   if(rug == TRUE){
     rug(x, side = 1)
   }
