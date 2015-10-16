@@ -67,7 +67,7 @@ Modified box plot alone
 
 ### quantitative x quantitative data
 
-Note here that the regression line does not extend beyond the range of the data; p-value, sample size, and r squared values are given clearly; and there is some measure of uncertainty about the slope (the confidence bands).
+Note here that the regression line does not extend beyond the range of the data, the p-value, sample size, and r squared values are given clearly, and there is some measure of uncertainty about the slope (the confidence bands).
 
 `scatter(trees[,1],trees[,2],xlab="tree girth (in.)",ylab="tree height (ft.)",main="scatter() example")`    
 
