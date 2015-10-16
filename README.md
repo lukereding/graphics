@@ -3,6 +3,8 @@ This repo contains code to create graphics I like. Most of the code isn't as fle
 
 Best way to use this code for the time being: download the `plotting_functions.R` script and source it using `source("/path/to/script/plotting_functions.R")`. It'll download any required packages you don't have.
 
+The code relies heavily on the [magrittr](https://github.com/smbache/magrittr#introduction), [beeswarm](https://github.com/aroneklund/beeswarm), and [viridis](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html) packages. 
+
 -------------
 
 These plots work for my purposes and are designed with the following philosophy in mind:
