@@ -1,9 +1,11 @@
 # graphics
-contains code to create graphics I like
+This repo contains code to create graphics I like. Most of the code isn't as flexible as your plain vanilla base R plotting functions (e.g. many of the functions below only accept the data as a list), but you'll find some better ways to plot things not easily implemented in R.
+
+Best way to use this code for the time being: download the `plotting_functions.R` script and source it using `source("/path/to/script/plotting_functions.R")`. It'll download any required packages you don't have.
 
 -------------
 
-These plots  work for my purposes and are designed with the following philosophy in mind:
+These plots work for my purposes and are designed with the following philosophy in mind:
 * every part of the graph should have a clear purpose
 * show the data, some summary of the data or parameter estimate of interest, and some measure of variability about that estimate
 * clearly label sample sizes
