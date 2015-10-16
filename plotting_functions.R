@@ -627,7 +627,7 @@ beeStripBox<-function(data,group,lab=rep(c(),length(data)),point_size=1.4,beeMet
     beeswarm(data,method=beeMethod,priority="density",pch=16,col=point_col,cex=point_size,side = side,bty='l',yaxt="n",labels=lab,...)
     # create y axis with the numbers the correct direction
     axis(2,las=2)
-    boxplot(data, main = "", axes = FALSE,border = point_col,at = 1:number_groups+0.2, xlab=" ", ylab=" ", border = ifelse(box_color==T,point_col,"black"), add=TRUE ,boxwex = box_thickness,pars = list(medlty = 1, whisklty = c(1, 1), medcex = 0.7, outcex = 0, staplelty = "blank"))
+    boxplot(data, main = "", axes = FALSE,at = 1:number_groups+0.2, xlab=" ", ylab=" ", border = ifelse(box_color==T,point_col,"black"), add=TRUE ,boxwex = box_thickness,pars = list(medlty = 1, whisklty = c(1, 1), medcex = 0.7, outcex = 0, staplelty = "blank"))
   }
   
   else{
@@ -638,7 +638,7 @@ beeStripBox<-function(data,group,lab=rep(c(),length(data)),point_size=1.4,beeMet
     beeswarm(data~group,method=beeMethod,priority="density",pch=16,yaxt="n",col=point_col,cex=point_size,side = side,bty='l',labels=lab,...)
     # create y axis with the numbers the correct direction
     axis(2,las=2)
-    boxplot(data~group, add=TRUE, main = "",border = point_col, at = 1:number_groups+0.2, axes = FALSE, xlab=" ", ylab=" ", boxwex = box_thickness, pars = list(medlty = 1, whisklty = c(1, 1), medcex = 0.7, outcex = 0, staplelty = "blank"))
+    boxplot(data~group, add=TRUE, main = "",border = ifelse(box_color==T,point_col,"black"), at = 1:number_groups+0.2, axes = FALSE, xlab=" ", ylab=" ", boxwex = box_thickness, pars = list(medlty = 1, whisklty = c(1, 1), medcex = 0.7, outcex = 0, staplelty = "blank"))
 
     if(stats==T){
       print(TukeyHSD(aov(data~group)))
@@ -649,7 +649,7 @@ beeStripBox<-function(data,group,lab=rep(c(),length(data)),point_size=1.4,beeMet
       else{
         x = paste("p = ",x,sep="")
       }
-      text(x=(median(1:number_groups)),y=max(data),labels=paste("anova, ",x,sep=""),pos=1)
+      text(x=(median(1:number_groups)),y=max(unlist(data)),labels=paste("anova, ",x,sep=""),pos=1)
     }
     
   }
@@ -660,7 +660,7 @@ beeStripBox<-function(data,group,lab=rep(c(),length(data)),point_size=1.4,beeMet
   # for plotting sample size below each group
   if(sample_size==TRUE){
     for(i in 1:number_groups){
-      text(x=x_values[i]+(scale*number_groups),y=min(data)*0.98,paste("n = ",boxplot_table$n,sep=""),col="grey20")
+      text(x=x_values[i]+(scale*number_groups),y=min(unlist(data))*0.98,paste("n = ",boxplot_table$n,sep=""),col="grey20")
     }
   }
 }
