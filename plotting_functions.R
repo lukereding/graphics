@@ -630,7 +630,7 @@ beeStripBox<-function(data,group,lab=rep(c(),length(data)),point_size=1.4,beeMet
     # get statistics you need to plot
     boxplot_table<-boxplot(data,plot=F)
     # create the plot
-    beeswarm(data,method=beeMethod,priority="density",pch=16,col=point_col,cex=point_size,side = side,bty='l',yaxt="n",labels=lab,...)
+    beeswarm(data,method=beeMethod,priority="density",pch=16,col=point_col,ylim=c(min(unlist(data))*0.95,max(unlist(data))*1.03),cex=point_size,cex.lab=1.2,side = side,bty='l',yaxt="n",labels=lab,...)
     # create y axis with the numbers the correct direction
     axis(2,las=2)
     boxplot(data, main = "", axes = FALSE,at = 1:number_groups+0.2, xlab=" ", ylab=" ", border = ifelse(box_color==T,point_col,"black"), add=TRUE ,boxwex = box_thickness,pars = list(medlty = 1, whisklty = c(1, 1), medcex = 0.7, outcex = 0, staplelty = "blank"))
@@ -666,7 +666,7 @@ beeStripBox<-function(data,group,lab=rep(c(),length(data)),point_size=1.4,beeMet
   # for plotting sample size below each group
   if(sample_size==TRUE){
     for(i in 1:number_groups){
-      text(x=x_values[i]+(scale*number_groups),y=min(unlist(data))*0.98,paste("n = ",boxplot_table$n,sep=""),col="grey20")
+      text(x=x_values[i]+(scale*number_groups),y=min(unlist(data))*0.99,paste("n = ",boxplot_table$n[i],sep=""),col="grey20")
     }
   }
 }
