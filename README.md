@@ -1,5 +1,5 @@
 # graphics
-This repo contains code to create graphics I like. Most of the code isn't as flexible as your plain vanilla base R plotting functions (e.g. many of the functions below only accept the data as a list), but you'll find some better ways to plot things not easily implemented in R.
+This repo contains code to create graphics I like. Most of the code isn't as flexible as your plain vanilla base R plotting functions (e.g. many of the functions below only accept the data as a list), but you'll find some better ways to plot things not easily implemented in R. These plotting functions work for me but your milage may vary. This script is constantly being updated.
 
 Best way to use this code for the time being: download the `plotting_functions.R` script and source it using `source("/path/to/script/plotting_functions.R")`. It'll download any required packages you don't have.
 
@@ -7,7 +7,7 @@ The code relies heavily on the [magrittr](https://github.com/smbache/magrittr#in
 
 -------------
 
-These plots work for my purposes and are designed with the following philosophy in mind:
+#### These plots are designed with the following philosophy in mind:
 * every part of the graph should have a clear purpose
 * show the data, some summary of the data or parameter estimate of interest, and some measure of variability about that estimate
 * clearly label sample sizes
@@ -22,9 +22,10 @@ Some of these things are not implemented (yet) in the graphics below
 
 ------------
 
-##Make pretty graphs like this:
-
 ### quantitative x categorical data
+
+Chances are you've never plotted the relationship between two quantitative variables without actually showing the data. Imagine giving a talk and showing a plot of a regression line without any data--your audience would become immediately skeptical. Why should standards be any different when plotting the relationship between a quantitative and a categorical variable? Boxplots and bar charts are great, but they rarely actually show the data in a clear and compelling way. This is the goal of the functions below.
+
 
 Plot the data for each group as a histogram; include plain vanilla boxplot alongside. Like a typical scatterplot, this display is nice because it shows the actual data in a nice form alongside a statistical summary of the data.
 
