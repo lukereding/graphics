@@ -26,6 +26,7 @@ Some of these things are not implemented (yet) in the graphics below
 
 Chances are you've never plotted the relationship between two quantitative variables without actually showing the data. Imagine giving a talk and showing a plot of a regression line without any data--your audience would become immediately skeptical. Why should standards be any different when plotting the relationship between a quantitative and a categorical variable? Boxplots and bar charts are great, but they rarely actually show the data in a clear and compelling way. This is the goal of the functions below.
 
+----------------
 
 Plot the data for each group as a histogram; include plain vanilla boxplot alongside. Like a typical scatterplot, this display is nice because it shows the actual data in a nice form alongside a statistical summary of the data.
 
