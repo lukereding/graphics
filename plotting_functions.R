@@ -103,7 +103,7 @@ simple<-function(data,grouping=NULL,lab=NA,point_size=1.2,line_color="red",line_
   x_values<-barplot(rep(1,number_groups),plot=F)
   
   # create the plot
-  plot(c(x_values[1]*0.4,x_values[length(x_values)]*1.2),y_limits*0.95,type="n",xaxt="n",yaxt="n",bty="l",cex.lab=1.2,...)
+  plot(c(x_values[1]*0.4,x_values[length(x_values)]*1.2),y_limits,type="n",xaxt="n",yaxt="n",bty="l",...)
   
   # create y axis with the numbers the correct direction
   axis(2,las=2)
@@ -140,7 +140,7 @@ simple<-function(data,grouping=NULL,lab=NA,point_size=1.2,line_color="red",line_
   # draw data points 
   if(jitter==T){
     for(i in 1:number_groups){
-      points(x=rep(x_values[i],length(data[[i]])) %>% jitter(amount=.05),y=data[[i]],pch=16,col=point_col[i],cex=point_size)
+      points(x=rep(x_values[i],length(data[[i]])) %>% jitter(0.7),y=data[[i]],pch=16,col=point_col[i],cex=point_size)
     }
   }
   else{
@@ -164,7 +164,7 @@ simple<-function(data,grouping=NULL,lab=NA,point_size=1.2,line_color="red",line_
   # for plotting sample size below each group
   if(sample_size==TRUE){
     for(i in 1:length(data)){
-      text(x_values[i],y_limits[1]*0.95,paste("n = ",length(data[[i]]),sep=""),col="grey20")
+      text(x_values[i],y_limits[1],paste("n = ",length(data[[i]]),sep=""),col="grey20")
     }
   }
 }
@@ -178,8 +178,7 @@ simple<-function(data,grouping=NULL,lab=NA,point_size=1.2,line_color="red",line_
 # beeStrip(list(iris %>% filter(Species=="setosa") %>% .$Sepal.Length, iris %>% filter(Species=="versicolor") %>% .$Sepal.Length, iris %>% filter(Species=="virginica") %>% .$Sepal.Length),lab=c("setosa","versicolor","virginica"),ylab="sepal length",main="beeStrip()",xlab="species")
 
 beeStrip<-function(data,lab=rep(c(),length(data)),point_size=1.4,beeMethod="center",line_color="red",line_width=3.0,jitter=T,point_col=viridis(length(data)+2)[1:length(data)],y_limits=c(min(unlist(data),na.rm=T),max(unlist(data),na.rm=T)),median=FALSE,rug=TRUE,sample_size=T,IQR=F,side=-1,...){
-  op <- par(no.readonly = TRUE)
-  par(cex.lab=1.2)
+  
   # make sure the data is a list; in the future I need to change the code to accomodate other types of data input (e.g. dataframes with y~x)
   if(is.list(data)!=TRUE){
     stop("input your data as a list")
@@ -188,7 +187,7 @@ beeStrip<-function(data,lab=rep(c(),length(data)),point_size=1.4,beeMethod="cent
   number_groups<-length(data)
   
   # create the plot
-  beeswarm(data,method=beeMethod,priority="density",pch=16,col=point_col,cex=point_size,ylim=c(min(unlist(data))*0.95,max(unlist(data))),side = side,bty='l',yaxt="n",labels=lab,...)
+  beeswarm(data,method=beeMethod,priority="density",pch=16,col=point_col,cex=point_size,side = side,bty='l',yaxt="n",labels=lab,...)
   # create y axis with the numbers the correct direction
   axis(2,las=2)
   
@@ -234,10 +233,9 @@ beeStrip<-function(data,lab=rep(c(),length(data)),point_size=1.4,beeMethod="cent
   # for plotting sample size below each group
   if(sample_size==TRUE){
     for(i in 1:length(data)){
-      text(x_values[i],y_limits[1]*0.95,paste("n = ",length(data[[i]]),sep=""),col="grey20")
+      text(x_values[i],y_limits[1]*0.99,paste("n = ",length(data[[i]]),sep=""),col="grey20")
     }
   }
-  on.exit(par(op))
 }
 
 
@@ -252,7 +250,6 @@ beeStrip<-function(data,lab=rep(c(),length(data)),point_size=1.4,beeMethod="cent
 # strip(list(iris %>% filter(Species=="setosa") %>% .$Sepal.Length, iris %>% filter(Species=="versicolor") %>% .$Sepal.Length, iris %>% filter(Species=="virginica") %>% .$Sepal.Length),lab=c("setosa","versicolor","virginica"),ylab="sepal length",main="strip()",xlab="species",mean_col="black",point_size=1.4,type="ci")
 
 strip<-function(data,lab=rep(c(),length(data)),type="se",jitter=T,points=16,xlab="",ymin="determine",ymax="determine",point_size=1.2,mean_col = "red",cols = viridis(length(data)+2)[1:length(data)],...){
-  op <- par(no.readonly = TRUE)
   par(bty="l")
   
   # error checking:
@@ -280,7 +277,7 @@ strip<-function(data,lab=rep(c(),length(data)),type="se",jitter=T,points=16,xlab
   x_values <- barplot(unlist(means)) %>% as.vector
   
   
-  plot(c(0,x_values[number_groups]+0.2),c(minimum_value,maximum_value),type="n",xaxt="n",yaxt="n",cex.lab=1.2,xlab=xlab,...)
+  plot(c(0,x_values[number_groups]+0.2),c(minimum_value,maximum_value),type="n",xaxt="n",yaxt="n",xlab=xlab,...)
   # create y axis with the numbers the correct direction
   axis(2,las=2)
   
@@ -327,10 +324,10 @@ strip<-function(data,lab=rep(c(),length(data)),type="se",jitter=T,points=16,xlab
   
   else if(jitter==T){
     for(i in 1:number_groups){
-      points(x=rep(x_values[i]-offset,length(data[[i]])) %>% jitter(amount=0.05),y=data[[i]],pch=points,col=cols[i],cex=point_size)
+      points(x=rep(x_values[i]-offset,length(data[[i]])) %>% jitter(amount=0.1),y=data[[i]],pch=points,col=cols[i],cex=point_size)
     }
   }
-  on.exit(par(op))
+  par(bty="o",lwd=1)
 }
 
 
@@ -370,8 +367,6 @@ credible_intervals<-function(x,n=100000){
 # bar(list(rnorm(20,5),rnorm(15,5)),CI=T,lab=c("A","B"),xlab="group",ylab="response",jitter=T,bar_color=viridis(10)[c(3,7)],point_size=1.5)
 
 bar<-function(sim,lab=rep(c(),length(sim)),CI=F,SE=F,bar_color="grey80",jitter=T,point_col="#00000080",y_limits=NA,median=FALSE,point_size=1.0,sample_size=TRUE,...){
-  
-  op <- par(no.readonly = TRUE)
   par(lwd = 1,family = 'Helvetica')
   
   if(is.list(sim)==F){
@@ -408,7 +403,7 @@ bar<-function(sim,lab=rep(c(),length(sim)),CI=F,SE=F,bar_color="grey80",jitter=T
   axis(2,cex=1.5,lwd=1,las=2)
   
   if(sample_size==TRUE){
-    text(x=p,y=min_value*0.97, pos=3, labels=paste("n = ",lapply(sim, length) ) )
+    text(x=p,y=0, pos=3, labels=paste("n = ",lapply(sim, length) ) )
   }
   
   if(SE==T & CI ==T){
@@ -453,7 +448,6 @@ bar<-function(sim,lab=rep(c(),length(sim)),CI=F,SE=F,bar_color="grey80",jitter=T
   }
   
   return(p)
-  on.exit(par(op))
 }
 
 ########################################################
@@ -529,7 +523,7 @@ scatter<-function(x,y,xlab="",ylab="",line=T,stats=TRUE,color="black",line_col="
       legend(x="bottomright",bty="n",legend=rp, y.intersp=1.2,cex=0.9,inset = 0.01)
     }
     else{
-      legend(x="bottomleft",bty="n",legend=rp,y.intersp=1.2,cex=0.9,inset = 0.01)
+      legend(x="bottomleft",bty="n",legend=rp,y.intersp=0.8,inset = 0.05)
     }
   }
   
