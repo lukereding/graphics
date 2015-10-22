@@ -608,7 +608,7 @@ beeStripMod<-function(data,group,lab=rep(c(),length(data)),point_size=1.4,beeMet
 # beeStripBox(iris$Sepal.Length,iris$Species,xlab="species",ylab="sepal length",main="beeStripBox() example")
 
 # TO DO: fix box color argument. can't get boxes to take on the right colors
-beeStripBox<-function(data,group,lab=rep(c(),length(data)),point_size=1.4,beeMethod="center",line_width=3.0,point_col=ifelse(is.list(data) %>% rep(20),viridis(length(data)+1)[1:length(data)],viridis(nlevels(group)+1)[1:nlevels(group)]),y_limits=c(ifelse(is.list(data),min(unlist(data)),min(data)),ifelse(is.list(data),max(unlist(data),max(data)))),mean=FALSE,sample_size=T,side=-1,stats=T,box_thickness = 0.2,box_color=FALSE,...){
+beeStripBox<-function(data,group,lab=rep(c(),length(data)),point_size=1.4,beeMethod="center",line_width=3.0,point_col=ifelse(is.list(data) %>% rep(20),viridis(length(data)+1)[1:length(data)],viridis(nlevels(group)+1)[1:nlevels(group)]),y_limits=c(ifelse(is.list(data),min(unlist(data)),min(data)),ifelse(is.list(data),max(unlist(data),max(unlist(data))))),mean=FALSE,sample_size=T,side=-1,stats=T,box_thickness = 0.2,box_color=FALSE,...){
   
   # if response is missing, assume data is a list
   if(missing(group)){
@@ -624,7 +624,7 @@ beeStripBox<-function(data,group,lab=rep(c(),length(data)),point_size=1.4,beeMet
     # get statistics you need to plot
     boxplot_table<-boxplot(data,plot=F)
     # create the plot
-    beeswarm(data,method=beeMethod,priority="density",pch=16,col=point_col,ylim=c(min(unlist(data))*0.95,max(unlist(data))*1.03),cex=point_size,cex.lab=1.2,side = side,bty='l',yaxt="n",labels=lab,...)
+    beeswarm(data,method=beeMethod,priority="density",pch=16,col=point_col,ylim=y_limits,cex=point_size,cex.lab=1.2,side = side,bty='l',yaxt="n",labels=lab,...)
     # create y axis with the numbers the correct direction
     axis(2,las=2)
     boxplot(data, main = "", axes = FALSE,at = 1:number_groups+0.2, xlab=" ", ylab=" ", border = ifelse(box_color==T,point_col,"black"), add=TRUE ,boxwex = box_thickness,pars = list(medlty = 1, whisklty = c(1, 1), medcex = 0.7, outcex = 0, staplelty = "blank"))
