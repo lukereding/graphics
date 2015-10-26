@@ -164,7 +164,7 @@ simple<-function(data,grouping=NULL,lab=NA,point_size=1.2,line_color="red",line_
   # for plotting sample size below each group
   if(sample_size==TRUE){
     for(i in 1:length(data)){
-      text(x_values[i],y_limits[1],paste("n = ",length(data[[i]]),sep=""),col="grey20")
+      text(x_values[i],par("usr")[3]*1.02,paste("n = ",length(data[[i]]),sep=""),col="grey20",pos=3)
     }
   }
 }
