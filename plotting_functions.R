@@ -140,7 +140,7 @@ simple<-function(data,grouping=NULL,lab=NA,point_size=1.2,line_color="red",line_
   # draw data points 
   if(jitter==T){
     for(i in 1:number_groups){
-      points(x=rep(x_values[i],length(data[[i]])) %>% jitter(0.7),y=data[[i]],pch=16,col=point_col[i],cex=point_size)
+      points(x=rep(x_values[i],length(data[[i]])) %>% jitter(amount = 0.05),y=data[[i]],pch=16,col=point_col[i],cex=point_size)
     }
   }
   else{
@@ -164,7 +164,7 @@ simple<-function(data,grouping=NULL,lab=NA,point_size=1.2,line_color="red",line_
   # for plotting sample size below each group
   if(sample_size==TRUE){
     for(i in 1:length(data)){
-      text(x_values[i],par("usr")[3]*1.02,paste("n = ",length(data[[i]]),sep=""),col="grey20",pos=3)
+      text(x_values[i],par("usr")[3]*1.03,paste("n = ",length(data[[i]]),sep=""),col="grey20",pos=3)
     }
   }
 }
