@@ -14,7 +14,7 @@ The code relies heavily on the [magrittr](https://github.com/smbache/magrittr#in
 * state some measure of effect size
 * state the the test used to assess statistical significance and the resulting p-value
 * don't extrapolate
-* use color thoughtfully. The default colors for most of these plots come from the [viridis](https://bids.github.io/colormap/) colormap, which is perceptually uniform, works printed in black and white, is accessible to people with the most common forms of colorblindness, and looks good.
+* use color thoughtfully. Or just use [viridis](https://bids.github.io/colormap/). Why? (a) It's perceptually uniform. (b) It looks good. (c) It works just as well printed in black and white. (d) It's accessible to people with the most common forms of colorblindness. (e) It works for representing categories or for representing a quantitative variable. (f) You'll never need to justify your color scheme ever again. Note that this is also true of the other colormaps provided in the viridis package (plasma, magma, and inferno), but they don't look as nice.
 
 
 Some of these things are not implemented (yet) in the graphics below
