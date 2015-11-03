@@ -33,7 +33,9 @@ cols<-c(ruby,mint,golden,slate,orange,sky)
 
 
 #' line for mean + data
-#' input data as a list; a mean is returned for each element of list. add median == T to add a diamond median
+#' 
+#' plots each vector in your list as a group with the data jittered; draws a line for the mean
+#' 
 #' @param data input your data as a list where length(list) = number of groups
 #' @param lab labels for groups
 #' @param point_size size of points
@@ -46,25 +48,16 @@ cols<-c(ruby,mint,golden,slate,orange,sky)
 #' @param rug plot 1-D rug plot?
 #' @param sample_size defaults to true
 #' @param IQR include line for IQR? defaults to false
-#' @kewords simple
+#' 
+#' @examples x <- list(rnorm(40,40,5),rnorm(20,35,2),rnorm(25,41,2))
 #' @examples simple(x,main="simple() defaults") # using the defaults
 #' @examples simple(x,jitter=F) # without jitter doesn't look as good
 #' @examples simple(x,line_col="black",point_col=c(ruby,mint,slate),ylab="measurement",xlab="group",lab=c("A","B","C"),rug=T)
 #' @examples simple(list(rnorm(50,50,5),rnorm(30,40,6),rnorm(10,60,2),rnorm(60,50,10),rnorm(30,39,4)),point_col=wes_palette(5, name = "Zissou"),line_color="black",median=T,main="simple() dressed up")
 #' @examples simple(list(rnorm(24,10,2),rchisq(20,5),rexp(40,1/5),runif(40,5,15)),lab=c("normal","chi-squared","exponetial","uniform"),point_col=c(ruby,mint,slate,"goldenrod"),line_color="black",median=T)
-#' simple()
-
-# x <- list(rnorm(40,40,5),rnorm(20,35,2),rnorm(25,41,2))
-# simple(x,main="simple() defaults") # using the defaults
-### simple(x,jitter=F) # without jitter doesn't look as good
-### simple(x,line_col="black",point_col=c(ruby,mint,slate),ylab="measurement",xlab="group",lab=c("A","B","C"),rug=T)
-## add the IQR: simple(x,line_col="black",point_col=c(ruby,mint,slate),ylab="measurement",xlab="group",lab=c("A","B","C"),rug=T,IQR=T)
-# simple(list(rnorm(50,50,5),rnorm(30,40,6),rnorm(10,60,2),rnorm(60,50,10),rnorm(30,39,4)),point_col=wes_palette(5, name = "Zissou"),line_color="black",median=T,main="simple() dressed up")
-## simple(list(rnorm(24,10,2),rchisq(20,5),rexp(40,1/5),runif(40,5,15)),lab=c("normal","chi-squared","exponetial","uniform"),point_col=c(ruby,mint,slate,"goldenrod"),line_color="black",median=T)
-# simple(list(rnorm(50,50,5),rnorm(30,40,6),rnorm(10,60,2),rnorm(60,50,10),rnorm(30,39,4)),point_col=wes_palette(5, name = "Zissou"),line_color="black",median=T,main="simple()",xlab="group",ylab="value",lab=c("A","B","C","D","E"))
-# simple(list(iris %>% filter(Species=="setosa") %>% .$Sepal.Length, iris %>% filter(Species=="versicolor") %>% .$Sepal.Length, iris %>% filter(Species=="virginica") %>% .$Sepal.Length),lab=c("setosa","versicolor","virginica"),ylab="sepal length",main="simple()",xlab="species")
-
-# to do: replace rug place with marginal density plots of each group?
+#' @examples simple(list(iris %>% filter(Species=="setosa") %>% .$Sepal.Length, iris %>% filter(Species=="versicolor") %>% .$Sepal.Length, iris %>% filter(Species=="virginica") %>% .$Sepal.Length),lab=c("setosa","versicolor","virginica"),ylab="sepal length",main="simple()",xlab="species")
+#' 
+#' @export
 
 simple<-function(data,grouping=NULL,lab=NA,point_size=1.2,line_color="red",line_width=3.0,jitter=T,point_col=viridis(length(data)+2)[1:length(data)],y_limits=c(min(unlist(data),na.rm=T),max(unlist(data),na.rm=T)),median=FALSE,rug=TRUE,sample_size=T,IQR=F,...){
   # can't figure out how to make inputting the data more flexible (e.g. with a formula)
@@ -177,6 +170,34 @@ simple<-function(data,grouping=NULL,lab=NA,point_size=1.2,line_color="red",line_
 # beeStrip(list(rnorm(50,50,5),rnorm(30,40,6),rnorm(10,60,2),rnorm(60,50,10),rnorm(30,39,4)),point_col=wes_palette(5, name = "Zissou"),line_color="grey30",IQR=T)
 # beeStrip(list(iris %>% filter(Species=="setosa") %>% .$Sepal.Length, iris %>% filter(Species=="versicolor") %>% .$Sepal.Length, iris %>% filter(Species=="virginica") %>% .$Sepal.Length),lab=c("setosa","versicolor","virginica"),ylab="sepal length",main="beeStrip()",xlab="species")
 
+
+#' beeStrip
+#'
+#' plots each vector in your list as a group with the data forming a histogram; draws a line at the mean for eaach group
+#'
+#' @param data list of groups you want to plot where length(data) = number of groups 
+#' @param lab labels for each group
+#' @param point_size size of the individual data points. default is 1.4
+#' @param beeMethod see beeswarm(). default is "center"
+#' @param line_color color of line drawn at the mean for each group. default is "red"
+#' @param line_width width of the line drawn at the mean. default is 3.0
+#' @param jitter logical. should the data be jittered? defaults to TRUE
+#' @param point_col vector of colors. defaults to viridis colors
+#' @param y_limits you know this one
+#' @param median logical. should a diamond for the median be plotted?
+#' @param rug logical. should a rug plot be plotted on the right side of the plot?
+#' @param sample_size logical. should the sample size be plotted beneath each group?
+#' @param IQR logical. Should a line representing the IQR for each group be plotted?
+#' @param ... other arguments to par()
+#'
+#' @return None
+#'
+#' @examples
+#' beeStrip(list(rnorm(50,50,5),rnorm(30,40,6),rnorm(10,60,2),rnorm(60,50,10),rnorm(30,39,4)),point_col=wes_palette(5, name = "Zissou"),line_color="black",median=T)
+#' beeStrip(list(iris %>% filter(Species=="setosa") %>% .$Sepal.Length, iris %>% filter(Species=="versicolor") %>% .$Sepal.Length, iris %>% filter(Species=="virginica") %>% .$Sepal.Length),lab=c("setosa","versicolor","virginica"),ylab="sepal length",main="beeStrip()",xlab="species")
+#'
+#' @export
+
 beeStrip<-function(data,lab=rep(c(),length(data)),point_size=1.4,beeMethod="center",line_color="red",line_width=3.0,jitter=T,point_col=viridis(length(data)+2)[1:length(data)],y_limits=c(min(unlist(data),na.rm=T),max(unlist(data),na.rm=T)),median=FALSE,rug=TRUE,sample_size=T,IQR=F,side=-1,...){
   
   # make sure the data is a list; in the future I need to change the code to accomodate other types of data input (e.g. dataframes with y~x)
@@ -240,14 +261,32 @@ beeStrip<-function(data,lab=rep(c(),length(data)),point_size=1.4,beeMethod="cent
 
 
 
-#data should be a list of vectors you want to plot
-
-# examples
-# strip(list(rnorm(50,5),rnorm(20,10)))
-# strip(list(rpois(50,5),rpois(20,3),rnorm(100,7)),type="ci",lab=c("a","b","c"),xlab="group",ylab="response")
-# lots of groups:
-# strip(list(rpois(50,5),rpois(20,3),rnorm(100,7),rnorm(45,2),rnorm(90,9)),type="ci",lab=c("a","b","c","d","e"),xlab="group",ylab="value",mean_col="black",col=viridis(7)[1:5] %>% addAlpha(0.5))
-# strip(list(iris %>% filter(Species=="setosa") %>% .$Sepal.Length, iris %>% filter(Species=="versicolor") %>% .$Sepal.Length, iris %>% filter(Species=="virginica") %>% .$Sepal.Length),lab=c("setosa","versicolor","virginica"),ylab="sepal length",main="strip()",xlab="species",mean_col="black",point_size=1.4,type="ci")
+#' plot categorical x quantitative data jittered
+#'
+#' plots each vector in your list as a group with the data jittered, draws a point at the mean. very similar to simple() 
+#'
+#' @param data list of vectors you want to plot
+#' @param lab labels for each group
+#' @param type what kind of uncertainty do you want to show around the mean? options are "se" for standard error, "sd" for standard deviation, or "ci" for a 95 percent confidence interval
+#' @param jitter logical. should the data be jittered?
+#' @param points type of plotting character. defaults to solid point, i.e., 16
+#' @param xlab label for x axis
+#' @param ymin minimum y value.
+#' @param ymax maximum y value
+#' @param point_size size of the plotting characters. defaults to 1.2
+#' @param mean_col color of the point for the mean. defaults to "red"
+#' @param cols vector of colors for the groups. defaults to viridis colors
+#' @param ... other arguments to pass to be par()
+#' 
+#' @return None
+#' 
+#' @examples 
+#' strip(list(rnorm(50,5),rnorm(20,10)))
+#' strip(list(rpois(50,5),rpois(20,3),rnorm(100,7)),type="ci",lab=c("a","b","c"),xlab="group",ylab="response")
+#' strip(list(rpois(50,5),rpois(20,3),rnorm(100,7),rnorm(45,2),rnorm(90,9)),type="ci",lab=c("a","b","c","d","e"),xlab="group",ylab="value",mean_col="black",col=viridis(7)[1:5] %>% addAlpha(0.5))
+#' strip(list(iris %>% filter(Species=="setosa") %>% .$Sepal.Length, iris %>% filter(Species=="versicolor") %>% .$Sepal.Length, iris %>% filter(Species=="virginica") %>% .$Sepal.Length),lab=c("setosa","versicolor","virginica"),ylab="sepal length",main="strip()",xlab="species",mean_col="black",point_size=1.4,type="ci")
+#' 
+#' @export
 
 strip<-function(data,lab=rep(c(),length(data)),type="se",jitter=T,points=16,xlab="",ymin="determine",ymax="determine",point_size=1.2,mean_col = "red",cols = viridis(length(data)+2)[1:length(data)],...){
   par(bty="l")
@@ -348,23 +387,33 @@ credible_intervals<-function(x,n=100000){
 
 ##############################################
 
-# barplot
-
-# sim is a list of vectors you want to plot
-# lab is the labels for under each bar
-
-# examples of usage:
-# simplest:
-# bar(list(rnorm(20,5),rnorm(15,5)),lab=c("A","B"),xlab="group",ylab="response",jitter=F)
-# with conf. intervals:
-# bar(list(rnorm(20,5),rnorm(15,5)),CI=T,lab=c("A","B"),xlab="group",ylab="response",jitter=F,bar_color=viridis(3)[1:2])
-# nicer:
-# bar(list(rnorm(20,5),rnorm(15,5)),CI=T,lab=c("A","B"),xlab="group",ylab="response")
-# with more groups
-# bar(list(rnorm(20,5),rnorm(15,5),rnorm(200,50),rnorm(50,1),rnorm(34,19)),CI=T,bar_color=viridis(7)[1:5])
-# with medians plotted:
-# bar(list(iris %>% filter(Species=="setosa") %>% .$Sepal.Length, iris %>% filter(Species=="versicolor") %>% .$Sepal.Length, iris %>% filter(Species=="virginica") %>% .$Sepal.Length),median=T,CI=T,lab=c("setosa","versicolor","virginica"),ylab="sepal length",main="bar() example")
-# bar(list(rnorm(20,5),rnorm(15,5)),CI=T,lab=c("A","B"),xlab="group",ylab="response",jitter=T,bar_color=viridis(10)[c(3,7)],point_size=1.5)
+#' plot categorical x quantitative data as bar plot
+#'
+#' plots each vector in your list as a group as a bar plot with the data on top, jittered
+#' 
+#' @param sim list of vectors you want to plot
+#' @param lab labels for each group
+#' @param CI logical. should a 95% confidence interval be drawn for each group? defaults to F
+#' @param SE logical. should the dtandard errors for each group be drawn? deafults to F
+#' @param bar_color color of the bars. can be a vector where length(bar_color) = number of groups
+#' @param jitter logical. show the data jittered? defaults to TRUE
+#' @param point_col color of the jittered data points
+#' @param y_limits
+#' @param median logical. draw median for each group
+#' @param point_size size of data points. defaults to 1.0. increase to make the data points bigger.
+#' @param sample_size logical. plot sample size under each bar?
+#' @param ... other arguments to be passed to par()
+#' 
+#' 
+#' @return matrix showing x axis positions of the bars
+#' 
+#' @examples 
+#' bar(list(rnorm(20,5),rnorm(15,5)),lab=c("A","B"),xlab="group",ylab="response",jitter=F)
+#' bar(list(rnorm(20,5),rnorm(15,5)),CI=T,lab=c("A","B"),xlab="group",ylab="response",jitter=F,bar_color=viridis(3)[1:2])
+#' bar(list(rnorm(20,5),rnorm(15,5),rnorm(200,50),rnorm(50,1),rnorm(34,19)),CI=T,bar_color=viridis(7)[1:5])
+#' bar(list(rnorm(20,5),rnorm(15,5)),CI=T,lab=c("A","B"),xlab="group",ylab="response",jitter=T,bar_color=viridis(10)[c(3,7)],point_size=1.5)
+#'
+#' @export
 
 bar<-function(sim,lab=rep(c(),length(sim)),CI=F,SE=F,bar_color="grey80",jitter=T,point_col="#00000080",y_limits=NA,median=FALSE,point_size=1.0,sample_size=TRUE,...){
   par(lwd = 1,family = 'Helvetica')
@@ -466,9 +515,39 @@ transform <- function(x,m,b){
   return((m*x)+b)
 }
 
+
 # example
 ## scatter(rnorm(50,50,10),rnorm(50,30,3))
 ## scatter(trees[,1],trees[,2],xlab="tree girth (in.)",ylab="tree height (ft.)",main="scatter() example")
+
+
+
+#' plot quantitative x quantitative data as scatter plot
+#'
+#' scatter plot with nice defaults. automatically tests for a linear association between your two variables, draws regression lines, prints stats to the plot, etc.
+#' 
+#' @param x vector of data for the x axis
+#' @param y vector of data for the y axis
+#' @param xlab x label
+#' @param ylab y label
+#' @param line logical. draw regression line? defaults to T
+#' @param stats logical. compute sample size, p-value for regression slope, and r squared value and print to the corner of the graph? defaults to TRUE
+#' @param color color of data points. defaults to "black"
+#' @param line_col color of regression line. defaults to "red"
+#' @param confidenceInterval logical. plot confidence bands about the slope?
+#' @param plottingCharacter type of plotting character. defaults to 16, i.e., solid point
+#' @param rug logical. plot a rug plot along the x and y axes? defaults to TRUE
+#' @param ... other arguments to par()
+#' 
+#' @return None
+#' 
+#' @examples 
+#' scatter(rnorm(50,50,10),rnorm(50,30,3))
+#' scatter(trees[,1],trees[,2],xlab="tree girth (in.)",ylab="tree height (ft.)",main="scatter() example")
+#' 
+#' 
+#' @export
+
 scatter<-function(x,y,xlab="",ylab="",line=T,stats=TRUE,color="black",line_col="red",confidenceInterval=T,plottingCharacter=16,rug = T,...){
   op <- par(no.readonly = TRUE)
   par(lwd=1,cex=1,bg="white",xpd=FALSE)
@@ -607,7 +686,35 @@ beeStripMod<-function(data,group,lab=rep(c(),length(data)),point_size=1.4,beeMet
 #data(iris)
 # beeStripBox(iris$Sepal.Length,iris$Species,xlab="species",ylab="sepal length",main="beeStripBox() example")
 
-# TO DO: fix box color argument. can't get boxes to take on the right colors
+#' plot quantitative x categorical data 
+#'
+#' plots a histogram of your individual data points alongside a boxplot for each group 
+#' 
+#' @param data list of groups you want to plot, or, if group is not left blank, a data frame
+#' @param group if you gave a dataframe for data, group is the name of the column containing group identities
+#' @param lab labels for groups
+#' @param point_size size of plotting characters. defaults to 1.4
+#' @param beeMethod see beeswarm. defaults to "center"
+#' @param line_width
+#' @param point_col color of the each group. defaults to viridis colors
+#' @param y_limits
+#' @param mean does nothing right now
+#' @param sample_size logical. plot sample size under each group?
+#' @param side defaults to -1. determines whether the histogram are stacked to the right or the left
+#' @param stats logical. do an ANOVA and print the p-value to the plot?
+#' @param box_thickness thickness of the lines that form the boxplot. defaults to 0.2
+#' @param box_color defaults to FALSE. color of the lines that form the boxes
+#' @param ... other arguments to pass to par()
+#' 
+#' 
+#' 
+#' @return ANOVA results
+#' 
+#' @examples 
+#' data(iris); beeStripBox(iris$Sepal.Length,iris$Species,xlab="species",ylab="sepal length",main="beeStripBox() example")
+#' 
+#' @export
+
 beeStripBox<-function(data,group,lab=rep(c(),length(data)),point_size=1.4,beeMethod="center",line_width=3.0,point_col=ifelse(is.list(data) %>% rep(20),viridis(length(data)+1)[1:length(data)],viridis(nlevels(group)+1)[1:nlevels(group)]),y_limits=c(ifelse(is.list(data),min(unlist(data)),min(data)),ifelse(is.list(data),max(unlist(data),max(unlist(data))))),mean=FALSE,sample_size=T,side=-1,stats=T,box_thickness = 0.2,box_color=FALSE,...){
   
   # if response is missing, assume data is a list
@@ -849,6 +956,27 @@ cohens_d <- function(x,y){
 
 ## Add an alpha value to a colour
 # from http://www.magesblog.com/2013/04/how-to-change-alpha-value-of-colours-in.html
+
+
+#' add transparency to a color
+#'
+#' from http://www.magesblog.com/2013/04/how-to-change-alpha-value-of-colours-in.html
+#' 
+#' @param col the color, or vector of colors, you want to add transparency to
+#' @param alpha the amount of transparency. ranges from 0 to 1 inclusive, where 0 is completely transparent and 1 is completely opaque
+#' 
+#' @return color value with transparency added
+#' 
+#' @examples 
+#' "red" %>% addAlpha(0.5)
+#' viridis(5) %>% addAlpha(0.7)
+#' compare:
+#' x <- list(rnorm(50,5),rnorm(50,5),rnorm(50,5),rnorm(50,5),rnorm(50,5),rnorm(50,5),rnorm(50,5),rnorm(50,5),rnorm(50,5))
+#' simple(x, point_col = plasma(10))
+#' simple(x, point_col = plasma(10) %>% addAlpha(0.5))
+#' 
+#' @export
+
 addAlpha <- function(col, alpha=1){
   if(missing(col))
     stop("Please provide a vector of colours.")
@@ -857,8 +985,3 @@ addAlpha <- function(col, alpha=1){
           rgb(x[1], x[2], x[3], alpha=alpha))  
 }
 
-convert_to_greyscale <- function(col){
-  avg <- mean(col2rgb(col)/255)
-  grey = rgb(red=avg,green=avg,blue=avg,alpha=1)
-  return(grey)
-}
